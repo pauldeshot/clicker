@@ -7,4 +7,12 @@ public class Utils {
             throw new RuntimeException(e);
         }
     }
+
+    public void sleepM(int x) {
+        try {
+            Thread.sleep(x);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

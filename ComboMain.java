@@ -10,8 +10,8 @@ public class ComboMain {
 
 		SunflowerLandConfig sfl_config = new SunflowerLandConfig(
 			54,
-			3 * 60 * 60 + 19 * 60,
-			100
+			4 * 60 * 60 + 60 * 60,
+			200
 		);
 		SunflowerLandBot sfl_bot = new SunflowerLandBot(sfl_config, clickerBot);
 

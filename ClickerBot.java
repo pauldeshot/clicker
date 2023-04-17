@@ -50,6 +50,10 @@ public class ClickerBot {
 		utils.sleep(x);
 	}
 
+	public void sleepM(int x) {
+		utils.sleepM(x);
+	}
+
 	public void printCoordinate() {
 		int x = getX();
 		int y = getY();

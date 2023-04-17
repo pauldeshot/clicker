@@ -4,7 +4,6 @@ import java.util.Random;
 public class SunflowerLandBot {
     SunflowerLandConfig config;
     ClickerBot clickerBot;
-
     int meals = 0;
     boolean firstMeal = true;
 
@@ -15,11 +14,10 @@ public class SunflowerLandBot {
 
     public SunflowerLandResult run(int currentWaitForFruit, int currentWaitingMeal) {
         SunflowerLandResult result = new SunflowerLandResult();
-        if (currentWaitForFruit >= config.waitForNextFruit) {
+        if (config.claimFruits && currentWaitForFruit >= config.waitForNextFruit) {
             clickInTab();
             clickerBot.sleep(1);
             result.totalWaitingTime++;
-
             for (int[] fruit : config.fruits) {
                 clickFruitTree(fruit[0], fruit[1]);
                 clickerBot.sleep(1);
@@ -46,7 +44,7 @@ public class SunflowerLandBot {
             result.resetWaitForFruitTime = true;
         }
 
-        if (currentWaitingMeal >= config.waitMeal || firstMeal) {
+        if (config.claimMeals && currentWaitingMeal >= config.waitMeal || firstMeal) {
             clickInTab();
             clickerBot.sleep(1);
             result.totalWaitingTime++;
@@ -70,6 +68,13 @@ public class SunflowerLandBot {
         clickerBot.sleep(1);
         result.totalWaitingTime++;
         return result;
+    }
+
+    public void crops() {
+        for (int[] crop : config.crops) {
+            clickFruitTree(crop[0], crop[1]);
+            clickerBot.sleepM(300);
+        }
     }
 
     private void clickInTab() {
