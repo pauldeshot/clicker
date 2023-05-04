@@ -28,6 +28,42 @@ public class SunflowerLandConfig {
             {1048,810}
     };
 
+    public  int[][] trees = {
+            {659,574},
+            {731,573},
+            {800,573},
+            {880,573},
+            {950,573},
+            {1030,573},
+            {1110,573},
+
+            {659,646},
+            {731,646},
+            {800,646},
+            {880,646},
+            {950,646},
+            {1030,646},
+            {1110,646},
+    };
+
+    public  int[][] stones = {
+            {297,164},
+            {337,170},
+            {376,170},
+            {411,170},
+            {447,170},
+            {486,170},
+            {520,170},
+            {555,170},
+
+            {297,208},
+            {337,208},
+            {376,208},
+
+            {520,208},
+            {555,208},
+    };
+
     public int[][] crops = {
             {740,133},
             {780,133},
@@ -74,6 +110,7 @@ public class SunflowerLandConfig {
     };
 
     public  int[] inventory = {1506,331};
-    public  int[] firePit = {572,442};
-    public  int[] firePitMealButton = {769,499};
+    public  int[] firePit = {448,419};
+    public  int[] firePitMealButton = {783,501};
+//    public  int[] firePitMealButton = {791,529};
 }

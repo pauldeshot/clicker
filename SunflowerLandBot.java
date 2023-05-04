@@ -77,6 +77,28 @@ public class SunflowerLandBot {
         }
     }
 
+    public void stones() {
+        for (int[] stone : config.stones) {
+            clickFruitTree(stone[0], stone[1]);
+            clickerBot.sleepM(300);
+            clickFruitTree(stone[0], stone[1]);
+            clickerBot.sleepM(300);
+            clickFruitTree(stone[0], stone[1]);
+            clickerBot.sleepM(300);
+        }
+    }
+
+    public void trees() {
+        for (int[] tree : config.trees) {
+            clickFruitTree(tree[0], tree[1]);
+            clickerBot.sleepM(300);
+            clickFruitTree(tree[0], tree[1]);
+            clickerBot.sleepM(300);
+            clickFruitTree(tree[0], tree[1]);
+            clickerBot.sleepM(300);
+        }
+    }
+
     private void clickInTab() {
         clickerBot.move(config.sunflowerLandTab[0], config.sunflowerLandTab[1]);
         clickerBot.clickMouse();
