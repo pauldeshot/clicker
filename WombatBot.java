@@ -9,6 +9,7 @@ public class WombatBot {
 
     int lastRefreshHour;
     int lastRefreshMinute = 23;
+    private boolean helpRequested = false;
 
     public WombatBot(WombatConfig config, ClickerBot clickerBot) {
         this.config = config;
@@ -20,13 +21,27 @@ public class WombatBot {
     public WombatResult run (int currentWaitingRun) {
         WombatResult result = new WombatResult();
 
-        if (runs > config.maxRuns) {
-            return result;
-        }
-
         Date date = new Date();
         int minute = date.getMinutes();
         int hour = date.getHours();
+
+        if (hour == 2 && minute < 24) {
+            clickerBot.sleep(60);
+            result.resetTime = true;
+            return result;
+        }
+
+        if (hour == 2 && minute == 25) {
+            System.out.println("Collect treasure.");
+            clickInTab();
+            claim();
+            treasureClaim();
+            refresh();
+            result.resetTime = true;
+            runs = 0;
+            clickerBot.sleep(90);
+            return result;
+        }
 
         if (hour > lastRefreshHour && minute > lastRefreshMinute) {
             lastRefreshHour = hour;
@@ -51,15 +66,27 @@ public class WombatBot {
                 result.totalWaitingTime += 3;
             }
             startRun();
-            requestHelp(2);
-            result.totalWaitingTime += 10;
+            this.helpRequested = false;
             result.resetTime = true;
             runs++;
             System.out.println("Run: "+ runs);
         }
+
+        if (!this.helpRequested) {
+            this.helpRequested = true;
+            requestHelp(2);
+            result.totalWaitingTime += 10;
+        }
+
         clickerBot.sleep(1);
         result.totalWaitingTime++;
         return result;
+    }
+
+    private void treasureClaim() {
+        clickerBot.move(config.treasure[0], config.treasure[1]);
+        clickerBot.clickMouse();
+        clickerBot.sleep(3);
     }
 
     private void startRun() {
@@ -73,6 +100,9 @@ public class WombatBot {
         clickerBot.clickMouse();
         clickerBot.sleep(waitingTime);
         clickerBot.move(config.clans[0], config.clans[1]);
+        clickerBot.clickMouse();
+        clickerBot.sleep(waitingTime);
+        clickerBot.move(config.helpAll[0], config.helpAll[1]);
         clickerBot.clickMouse();
         clickerBot.sleep(waitingTime);
         clickerBot.move(config.members[0], config.members[1]);

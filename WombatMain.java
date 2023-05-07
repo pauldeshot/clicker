@@ -10,8 +10,8 @@ public class WombatMain {
 
 		while (true) {
 			WombatResult result = bot.run(currentWaitingRun);
-
 			currentWaitingRun += result.totalWaitingTime;
+
 			if (result.resetTime) {
 				currentWaitingRun = 0;
 			}
