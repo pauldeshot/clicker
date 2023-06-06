@@ -11,6 +11,12 @@ public class Trees2SunflowerLandMain {
 
 		while (true) {
 			bot.trees();
+			clickerBot.sleepM(1000);
+			bot.inventory("Pickaxe");
+			clickerBot.sleepM(1000);
+			bot.stones();
+			clickerBot.sleepM(1000);
+			bot.inventory("Axe");
 			clickerBot.sleep(36 * 60 + 15);
 		}
 	}

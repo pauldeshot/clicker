@@ -31,9 +31,11 @@ public class WombatBot {
             return result;
         }
 
-        if (hour == 2 && minute == 25) {
+        if (hour == 3 && minute == 25) {
+            clickerBot.sleep(1);
             System.out.println("Collect treasure.");
             clickInTab();
+            refresh();
             claim();
             treasureClaim();
             refresh();
@@ -54,6 +56,7 @@ public class WombatBot {
         }
 
         if (currentWaitingRun >= config.waitRun || currentWaitingRun == -1) {
+            clickerBot.sleep(1);
             clickInTab();
             if (currentWaitingRun > 0) {
                 clickerBot.sleep(3);
@@ -73,12 +76,13 @@ public class WombatBot {
         }
 
         if (!this.helpRequested) {
+            clickerBot.sleep(1);
+            clickInTab();
             this.helpRequested = true;
             requestHelp(2);
             result.totalWaitingTime += 10;
         }
 
-        clickerBot.sleep(1);
         result.totalWaitingTime++;
         return result;
     }
@@ -96,27 +100,17 @@ public class WombatBot {
 
     private void requestHelp(int waitingTime) {
         clickerBot.sleep(waitingTime);
-        clickerBot.move(config.menu[0], config.menu[1]);
-        clickerBot.clickMouse();
-        clickerBot.sleep(waitingTime);
-        clickerBot.move(config.clans[0], config.clans[1]);
-        clickerBot.clickMouse();
-        clickerBot.sleep(waitingTime);
         clickerBot.move(config.helpAll[0], config.helpAll[1]);
         clickerBot.clickMouse();
-        clickerBot.sleep(waitingTime);
-        clickerBot.move(config.members[0], config.members[1]);
-        clickerBot.clickMouse();
+
         clickerBot.sleep(waitingTime);
         clickerBot.move(config.requestAll[0], config.requestAll[1]);
-        clickerBot.clickMouse();
-        clickerBot.sleep(waitingTime);
-        clickerBot.move(config.backToHome[0], config.backToHome[1]);
         clickerBot.clickMouse();
     }
     private void refresh() {
         clickerBot.move(config.refresh[0], config.refresh[1]);
         clickerBot.clickMouse();
+        clickerBot.sleep(30);
     }
     private void claim() {
         clickerBot.move(config.rewardButton[0], config.rewardButton[1]);

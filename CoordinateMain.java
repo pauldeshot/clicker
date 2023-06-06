@@ -1,5 +1,4 @@
 public class CoordinateMain {
-
     static ClickerBot clickerBot;
     public static void main(String[] args) {
         System.out.println("----- Coordinate printer ------");
