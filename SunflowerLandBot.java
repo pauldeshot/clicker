@@ -212,6 +212,11 @@ public class SunflowerLandBot {
             clickerBot.clickMouse();
         }
 
+        if (item.equals("Cauliflower")) {
+            clickerBot.move(config.cauliflower_seed[0], config.cauliflower_seed[1]);
+            clickerBot.clickMouse();
+        }
+
         if (item.equals("Axe")) {
             clickerBot.move(config.axe[0], config.axe[1]);
             clickerBot.clickMouse();
@@ -237,7 +242,7 @@ public class SunflowerLandBot {
 
     public FarmData checkFarm() {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.sunflower-land.com/visit/XXX"))
+                .uri(URI.create("https://api.sunflower-land.com/visit/151364"))
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response = null;

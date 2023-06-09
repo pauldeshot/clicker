@@ -216,6 +216,7 @@ public class SunflowerLandConfig {
     public  int[] cabbage_seed = {669,366};
     public  int[] beetroot_seed = {726,370};
     public  int[] parsnip_seed = {832,367};
+    public  int[] cauliflower_seed = {694,446};
     public  int[] axe = {455,514};
     public  int[] pickaxe = {509,515};
     public  int[] stone_pickaxe = {564,515};

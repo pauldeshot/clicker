@@ -20,8 +20,9 @@ public class CropsCronSunflowerLandMain {
         Map<Integer, String> queue = new HashMap<>();
 
         String[] q = {
+//            "Cauliflower",
 //            "Parsnip",
-            "Cabbage",
+//            "Cabbage",
             "Carrot",
             "Pumpkin",
             "Potato",
@@ -32,7 +33,7 @@ public class CropsCronSunflowerLandMain {
             queue.put(i, q[i]);
         }
 
-        boolean farmCrops = true;
+        boolean farmCrops = false;
         boolean cookMeal = false;
         boolean collectResources = true;
         boolean wombat = true;
@@ -68,11 +69,11 @@ public class CropsCronSunflowerLandMain {
                 bot.clickInTab();
                 FarmData farmData = bot.checkFarm();
 
-                System.out.println("Current inventory: " + currentInventory);
-                if (!queue.get(current).equals(currentInventory)) {
-                    currentInventory = bot.inventory(queue.get(current));
-                    System.out.println("change inventory: " + currentInventory);
-                }
+//                System.out.println("Current inventory: " + currentInventory);
+//                if (!queue.get(current).equals(currentInventory)) {
+                bot.inventory(queue.get(current));
+//                    System.out.println("change inventory: " + currentInventory);
+//                }
 
                 nextCrop = getTimePlusSecond(config.cropsTimes.get(queue.get(current)) + 5);
                 bot.crops(farmData.rewards, true);
