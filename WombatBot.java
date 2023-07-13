@@ -31,11 +31,12 @@ public class WombatBot {
             return result;
         }
 
-        if (hour == 3 && minute == 25) {
+        if (hour == 3 && minute == 35) {
             clickerBot.sleep(1);
             System.out.println("Collect treasure.");
             clickInTab();
             refresh();
+            clickerBot.sleep(10);
             claim();
             treasureClaim();
             refresh();

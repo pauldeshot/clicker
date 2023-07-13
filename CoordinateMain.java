@@ -7,6 +7,7 @@ public class CoordinateMain {
         System.out.println("Program uruchomi się za 2 sekundy.");
         clickerBot.sleep(2);
 
+
         clickerBot.printCoordinate();
     }
 }

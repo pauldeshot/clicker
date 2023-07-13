@@ -8,10 +8,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class SunflowerLandBot {
     SunflowerLandConfig config;
@@ -70,7 +67,7 @@ public class SunflowerLandBot {
                     result.totalWaitingTime++;
                 }
 
-                clickMeal();
+                clickMeal("Mashed Potato");
                 result.resetWaitingMealTime = true;
                 meals++;
                 firstMeal = false;
@@ -83,21 +80,22 @@ public class SunflowerLandBot {
     }
 
     public void crops() {
-
         Map<Integer, Map<Integer, Boolean>> rewards = new HashMap<>();
-        crops(rewards, false);
+        crops(new FarmData(), false);
     }
 
-    public void crops(Map<Integer, Map<Integer, Boolean>> rewards, boolean doubleClick) {
-        for (int i = 0; i < config.crops.length; i++) {
-            int x = config.cropsPosition[i][0];
-            int y = config.cropsPosition[i][1];
+    public void crops(FarmData farmData, boolean doubleClick) {
+        for (Long key : farmData.crops.keySet()) {
+            CropsInfo cropsInfo = farmData.crops.get(key);
 
-            if (!rewards.containsKey(x) || !rewards.get(x).get(y)) {
-                moveAndClick(config.crops[i][0], config.crops[i][1]);
+            int x = config.cropsColumnCoordinate.get(cropsInfo.x);
+            int y = config.cropsRowCoordinate.get(cropsInfo.y);
+
+            if (!cropsInfo.hasReward) {
+                moveAndClick(x, y);
                 clickerBot.sleepM(250);
                 if (doubleClick) {
-                    moveAndClick(config.crops[i][0], config.crops[i][1]);
+                    moveAndClick(x, y);
                     clickerBot.sleepM(100);
                 }
             }
@@ -163,13 +161,36 @@ public class SunflowerLandBot {
         clickerBot.click(InputEvent.BUTTON1_DOWN_MASK);
     }
 
-    private void clickMeal() {
+    private void clickMeal(String meal) {
         Random rand = new Random();
         int randOffset = 3;
 
-        clickerBot.sleep(rand.nextInt(2) + 1);
-        clickerBot.move(config.firePitMealButton[0] + rand.nextInt(randOffset), config.firePitMealButton[1] + rand.nextInt(randOffset));
-        clickerBot.click(InputEvent.BUTTON1_DOWN_MASK);
+        int mealX = config.mashedPotato[0] + rand.nextInt(randOffset);
+        int mealY = config.mashedPotato[1] + rand.nextInt(randOffset);
+        int cookButtonX = config.mashedPotatoCookButton[0] + rand.nextInt(randOffset);
+        int cookButtonY = config.mashedPotatoCookButton[1] + rand.nextInt(randOffset);
+
+        if (meal.equals("Pumpkin Soup")) {
+            mealX = config.pumpkinSoup[0] + rand.nextInt(randOffset);
+            mealY = config.pumpkinSoup[1] + rand.nextInt(randOffset);
+            cookButtonX = config.pumpkinSoupCookButton[0] + rand.nextInt(randOffset);
+            cookButtonY = config.pumpkinSoupCookButton[1] + rand.nextInt(randOffset);
+        }
+
+        if (meal.equals("Bumpkin Broth")) {
+            mealX = config.bumpkinBroth[0] + rand.nextInt(randOffset);
+            mealY = config.bumpkinBroth[1] + rand.nextInt(randOffset);
+            cookButtonX = config.bumpkinBrothCookButton[0] + rand.nextInt(randOffset);
+            cookButtonY = config.bumpkinBrothCookButton[1] + rand.nextInt(randOffset);
+        }
+
+        clickerBot.sleepM(300);
+        clickerBot.move(mealX, mealY);
+        clickerBot.clickMouse();
+
+        clickerBot.sleepM(300);
+        clickerBot.move(cookButtonX, cookButtonY);
+        clickerBot.clickMouse();
     }
 
     public String inventory(String item) {
@@ -263,35 +284,28 @@ public class SunflowerLandBot {
 
         Iterator keys = crops.keys();
 
-        Map<Integer, Map<Integer, Boolean>> rewards = new HashMap<>();
+        Map<Long, CropsInfo> tmpCrops = new HashMap<>();
         while (keys.hasNext()) {
             String key = (String) keys.next();
             JSONObject crop = crops.getJSONObject(key);
             int x = (int) crop.get("x");
             int y = (int) crop.get("y");
 
-            if (x == 5 && y == 14) {
-                System.out.println("JEST");
-            }
-
             boolean hasReward = false;
             if (crop.has("crop")) {
                 hasReward = crop.getJSONObject("crop").has("reward");
             }
 
-            if (rewards.containsKey(x)) {
-                Map<Integer, Boolean> rewardX = rewards.get(x);
-                rewardX.put(y, hasReward);
-                rewards.put(x, rewardX);
-            } else {
-                Map<Integer, Boolean> rewardX = new HashMap<>();
-                rewardX.put(y, hasReward);
-                rewards.put(x, rewardX);
-            }
-        }
+            Long id = (Long) crop.get("createdAt");
+            CropsInfo cropsInfo = new CropsInfo();
+            cropsInfo.x = x;
+            cropsInfo.y = y;
+            cropsInfo.hasReward = hasReward;
 
+            tmpCrops.put(id, cropsInfo);
+        }
         FarmData farmData = new FarmData();
-        farmData.rewards = rewards;
+        farmData.crops = new TreeMap<Long, CropsInfo>(tmpCrops);
 
         JSONObject inventory = state.getJSONObject("inventory");
 
@@ -363,12 +377,14 @@ public class SunflowerLandBot {
         return farmData;
     }
 
-    public void collectMeal() {
+    public void collectMeal(String meal, boolean firstMeal) {
+        if (!firstMeal) {
+            clickerBot.sleepM(500);
+            clickFirePit();
+        }
         clickerBot.sleepM(500);
         clickFirePit();
         clickerBot.sleepM(500);
-        clickFirePit();
-        clickerBot.sleepM(500);
-        clickMeal();
+        clickMeal(meal);
     }
 }
