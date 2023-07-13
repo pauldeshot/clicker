@@ -1,3 +1,10 @@
+package ClickerBot;
+
+import ClickerBot.Bots.ClickerBot;
+import ClickerBot.Bots.WombatBot;
+import ClickerBot.Config.WombatConfig;
+import ClickerBot.DTO.WombatResult;
+
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 

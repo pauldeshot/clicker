@@ -1,3 +1,12 @@
+package ClickerBot;
+
+import ClickerBot.Bots.ClickerBot;
+import ClickerBot.Bots.SunflowerLandBot;
+import ClickerBot.Bots.WombatBot;
+import ClickerBot.Config.SunflowerLandConfig;
+import ClickerBot.Config.WombatConfig;
+import ClickerBot.DTO.FarmData;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;

@@ -1,3 +1,5 @@
+package ClickerBot.DTO;
+
 public class SunflowerLandResult {
 
     public int totalWaitingTime = 0;

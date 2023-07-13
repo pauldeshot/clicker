@@ -1,5 +1,9 @@
-import java.awt.event.InputEvent;
-import java.util.Random;
+package ClickerBot;
+
+import ClickerBot.Bots.ClickerBot;
+import ClickerBot.Bots.SunflowerLandBot;
+import ClickerBot.Config.SunflowerLandConfig;
+import ClickerBot.DTO.SunflowerLandResult;
 
 public class SunflowerLandMain {
 	// Konfiguracja dotycząca czasu czekania

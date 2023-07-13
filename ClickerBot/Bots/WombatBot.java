@@ -1,4 +1,9 @@
-import java.util.Calendar;
+package ClickerBot.Bots;
+
+import ClickerBot.Bots.ClickerBot;
+import ClickerBot.Config.WombatConfig;
+import ClickerBot.DTO.WombatResult;
+
 import java.util.Date;
 
 public class WombatBot {

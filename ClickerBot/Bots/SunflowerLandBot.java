@@ -1,3 +1,10 @@
+package ClickerBot.Bots;
+
+import ClickerBot.Bots.ClickerBot;
+import ClickerBot.Config.SunflowerLandConfig;
+import ClickerBot.DTO.CropsInfo;
+import ClickerBot.DTO.FarmData;
+import ClickerBot.DTO.SunflowerLandResult;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;

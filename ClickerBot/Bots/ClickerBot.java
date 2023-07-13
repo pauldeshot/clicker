@@ -1,3 +1,7 @@
+package ClickerBot.Bots;
+
+import ClickerBot.Utils.Utils;
+
 import java.awt.*;
 import java.awt.event.InputEvent;
 

@@ -1,3 +1,5 @@
+package ClickerBot.Utils;
+
 public class Utils {
 
     public void sleep(int x) {

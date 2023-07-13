@@ -1,3 +1,7 @@
+package ClickerBot.DTO;
+
+import ClickerBot.DTO.CropsInfo;
+
 import java.util.Map;
 
 public class FarmData {

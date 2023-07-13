@@ -1,3 +1,7 @@
+package ClickerBot;
+
+import ClickerBot.Bots.ClickerBot;
+
 public class CoordinateMain {
     static ClickerBot clickerBot;
     public static void main(String[] args) {

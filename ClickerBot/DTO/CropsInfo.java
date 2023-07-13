@@ -1,3 +1,5 @@
+package ClickerBot.DTO;
+
 import java.util.Map;
 
 public class CropsInfo {

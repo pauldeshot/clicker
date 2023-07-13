@@ -1,3 +1,7 @@
+package ClickerBot;
+
+import ClickerBot.Bots.ClickerBot;
+
 public class ComboMain {
 	public static void main(String[] args) {
 		System.out.println("----- Wombat clicker ------");

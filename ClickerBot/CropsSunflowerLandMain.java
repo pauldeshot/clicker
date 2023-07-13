@@ -1,4 +1,10 @@
-public class ClicksMain {
+package ClickerBot;
+
+import ClickerBot.Bots.ClickerBot;
+import ClickerBot.Bots.SunflowerLandBot;
+import ClickerBot.Config.SunflowerLandConfig;
+
+public class CropsSunflowerLandMain {
 		public static void main(String[] args) {
 		System.out.println("----- Sunflower Land Clicker ------");
 		clickerBot = new ClickerBot();
@@ -9,12 +15,7 @@ public class ClicksMain {
 		SunflowerLandConfig config = new SunflowerLandConfig();
 		SunflowerLandBot bot = new SunflowerLandBot(config, clickerBot);
 
-		int x = 0;
-		while(x < 400) {
-			x++;
-			clickerBot.clickMouse();
-			clickerBot.sleepM(200);
-		};
+		bot.crops();
 	}
 
 	static ClickerBot clickerBot;

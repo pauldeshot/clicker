@@ -1,4 +1,4 @@
-# ClickerBot For Sunflower Land
+# ClickerBot.Bots.ClickerBot For Sunflower Land
 
 Version: 1.0.0
 
@@ -15,13 +15,13 @@ Jeżeli ktoś chciałbym się odwzdzieczyć za tego bota, to zachęcam do wysła
 ## Konfiguracja aplikacji i uruchomienie aplikacji
 
 ```shell
-javac CoordinateMain.java
-javac SunflowerLandMain.java
-javac WombatMain.java
+javac ClickerBot.CoordinateMain.java
+javac ClickerBot.SunflowerLandMain.java
+javac ClickerBot.WombatMain.java
 
-java CoordinateMain
-java SunflowerLandMain
-java WombatMain
+java ClickerBot.CoordinateMain
+java ClickerBot.SunflowerLandMain
+java ClickerBot.WombatMain
 ```
 
 

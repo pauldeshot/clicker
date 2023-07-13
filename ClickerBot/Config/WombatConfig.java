@@ -1,3 +1,5 @@
+package ClickerBot.Config;
+
 public class WombatConfig {
     // Konfiguracja dotycząca czasu czekania
     public int waitRun = 5 * 60 + 1;
