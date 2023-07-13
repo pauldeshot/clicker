@@ -12,10 +12,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CropsCronSunflowerLandMain {
+public class MultiBotMain {
 
     public static void main(String[] args) {
         System.out.println("----- Sunflower Land Clicker ------");
+        System.out.println("----- Wombat Clicker ------");
+
         clickerBot = new ClickerBot();
         System.out.println("Program uruchomi się za 2 sekundy.");
         clickerBot.sleepM(500);
@@ -42,12 +44,6 @@ public class CropsCronSunflowerLandMain {
 //            "Sunflower"
         };
 
-//        for (String crop : crops) {
-//            bot.inventory(crop);
-//            clickerBot.sleep(3);
-//        }
-//        clickerBot.sleep(300);
-
         String[] meals = {
                 "Mashed Potato",
                 "Pumpkin Soup",
@@ -70,9 +66,9 @@ public class CropsCronSunflowerLandMain {
             mealsQueue.put(i, meals[i]);
         }
 
-        boolean farmCrops = true;
+        boolean farmCrops = false;
         boolean cookMeal = false;
-        boolean collectResources = false;
+        boolean collectResources = true;
         boolean wombat = false;
 
         int currentCrop = 0;

@@ -4,26 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SunflowerLandConfig {
-    public boolean claimFruits = false;
-    public boolean claimMeals = true;
 
+    // DODAJ TUTAJ SWÓJ NUMER FARMY
+    public int farmId = 1;
 
-        public int[] sunflowerLandTab = {107,15};
-//    public int[] sunflowerLandTab = {370,12};
-
-    public int waitMeal = 54;
-//    public int waitMeal = 18 * 60;
-    public int fullWaitForNextFruit = 8 * 60 * 60 + 60;
-    public  int waitForNextFruit = 135 * 60;
-    public  int maxMeals = 180;
-
-    public SunflowerLandConfig(int waitMeal, int waitForNextFruit, int maxMeals) {
-        this.waitMeal = waitMeal;
-        this.waitForNextFruit = waitForNextFruit;
-        this.maxMeals = maxMeals;
-
-        setTimes();
-    }
+    public int[] sunflowerLandTab = {107,15};
 
     private void setTimes() {
         cropsTimes = new HashMap<>();
@@ -46,7 +31,6 @@ public class SunflowerLandConfig {
         cropsTimes.put("Radish", 17 * 60 * 60 + 27 * 60);
         cropsTimes.put("Wheat", 17 * 60 * 60 + 27 * 60);
         cropsTimes.put("Kale", 26 * 60 * 60 + 60 * 60);
-
 
         // crops rows
         cropsRowCoordinate = new HashMap<>();
@@ -111,21 +95,9 @@ public class SunflowerLandConfig {
     };
 
     public  int[][] stones = {
-            {550,171},
-            {588,171},
-            {626,171},
-            {664,171},
-            {702,171},
-            {740,171},
-            {778,171},
+            {833,204},
+            {874,204},
 
-            {550,210},
-            {588,210},
-            {626,210},
-            {664,210},
-            {702,210},
-            {740,210},
-            {778,210},
     };
 
     public  int[][] iron = {
