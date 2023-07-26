@@ -27,3 +27,5 @@ hs_err_pid*
 out/
 ClickerBot.iml
 config.cnf
+
+config.json
