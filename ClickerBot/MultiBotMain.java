@@ -37,10 +37,10 @@ public class MultiBotMain {
 //            "Cauliflower",
 //            "Parsnip",
 //            "Beetroot",
-//            "Cabbage",
-//            "Carrot",
-//            "Pumpkin",
-            "Potato",
+            "Cabbage",
+            "Carrot",
+            "Pumpkin",
+//            "Potato",
             "Sunflower"
         };
 
@@ -66,9 +66,9 @@ public class MultiBotMain {
             mealsQueue.put(i, meals[i]);
         }
 
-        boolean farmCrops = false;
+        boolean farmCrops = true;
         boolean cookMeal = false;
-        boolean collectResources = false;
+        boolean collectResources = true;
         boolean wombat = false;
 
         int currentCrop = 0;
@@ -76,8 +76,8 @@ public class MultiBotMain {
 
         int resourceWait = 10 * 60 + 15;
 
-//        Date nextCrop = getTimePlusSecond(0);
-        Date nextCrop = getTimePlusSecond(510 * 60);
+        Date nextCrop = getTimePlusSecond(0);
+//        Date nextCrop = getTimePlusSecond(510 * 60);
         Date nextResource = new Date();
 
         Date nextWombatRun = new Date();

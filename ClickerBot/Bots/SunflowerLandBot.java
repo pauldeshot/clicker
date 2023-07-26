@@ -23,7 +23,7 @@ public class SunflowerLandBot {
     }
 
     public void crops(FarmData farmData, boolean doubleClick) {
-        for (Long key : farmData.crops.keySet()) {
+        for (String key : farmData.crops.keySet()) {
             CropsInfo cropsInfo = farmData.crops.get(key);
 
             int x = config.cropsColumnCoordinate.get(cropsInfo.x);
@@ -154,21 +154,6 @@ public class SunflowerLandBot {
             clickerBot.clickMouse();
         }
 
-        if (item.equals("Axe")) {
-            clickerBot.move(config.axe[0], config.axe[1]);
-            clickerBot.clickMouse();
-        }
-
-        if (item.equals("Pickaxe")) {
-            clickerBot.move(config.pickaxe[0], config.pickaxe[1]);
-            clickerBot.clickMouse();
-        }
-
-        if (item.equals("Stone Pickaxe")) {
-            clickerBot.move(config.stone_pickaxe[0], config.stone_pickaxe[1]);
-            clickerBot.clickMouse();
-        }
-
         clickerBot.sleepM(300);
         clickerBot.move(config.blank[0], config.blank[1]);
         clickerBot.clickMouse();
@@ -200,7 +185,7 @@ public class SunflowerLandBot {
 
         Iterator keys = crops.keys();
 
-        Map<Long, CropsInfo> tmpCrops = new HashMap<>();
+        Map<String, CropsInfo> tmpCrops = new HashMap<>();
         while (keys.hasNext()) {
             String key = (String) keys.next();
             JSONObject crop = crops.getJSONObject(key);
@@ -212,7 +197,7 @@ public class SunflowerLandBot {
                 hasReward = crop.getJSONObject("crop").has("reward");
             }
 
-            Long id = (Long) crop.get("createdAt");
+            String id = "id:"+x+y;
             CropsInfo cropsInfo = new CropsInfo();
             cropsInfo.x = x;
             cropsInfo.y = y;
@@ -221,7 +206,7 @@ public class SunflowerLandBot {
             tmpCrops.put(id, cropsInfo);
         }
         FarmData farmData = new FarmData();
-        farmData.crops = new TreeMap<Long, CropsInfo>(tmpCrops);
+        farmData.crops = new TreeMap<>(tmpCrops);
 
         JSONObject inventory = state.getJSONObject("inventory");
 
