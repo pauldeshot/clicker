@@ -11,7 +11,10 @@ public class CoordinateMain {
         System.out.println("Program uruchomi się za 2 sekundy.");
         clickerBot.sleep(2);
 
-
-        clickerBot.printCoordinate();
+        while (true) {
+            System.out.println("Wait 2s.");
+            clickerBot.sleep(4);
+            clickerBot.printCoordinate();
+        }
     }
 }

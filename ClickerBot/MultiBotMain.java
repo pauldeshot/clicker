@@ -41,19 +41,19 @@ public class MultiBotMain {
 //            "Carrot",
 //            "Pumpkin",
             "Potato",
-//            "Sunflower"
+            "Sunflower"
         };
 
         String[] meals = {
-                "Mashed Potato",
-                "Pumpkin Soup",
+//                "Mashed Potato",
+//                "Pumpkin Soup",
                 "Bumpkin Broth"
         };
 
         Map<String, Integer> mealsTarget = new HashMap<>();
-        mealsTarget.put("Mashed Potato", 0);
-        mealsTarget.put("Pumpkin Soup", 0);
-        mealsTarget.put("Bumpkin Broth", 20);
+//        mealsTarget.put("Mashed Potato", 100);
+//        mealsTarget.put("Pumpkin Soup", 100);
+        mealsTarget.put("Bumpkin Broth", 90);
 
         Map<Integer, String> cropsQueue = new HashMap<>();
         Map<Integer, String> mealsQueue = new HashMap<>();
@@ -68,21 +68,17 @@ public class MultiBotMain {
 
         boolean farmCrops = false;
         boolean cookMeal = false;
-        boolean collectResources = true;
+        boolean collectResources = false;
         boolean wombat = false;
 
         int currentCrop = 0;
         int currentMeal = 0;
 
-        int waitTree = 10 * 60 + 15;
-        int waitStone = 10 * 60 + 15;
-        int waitIron = 10 * 60 + 15;
+        int resourceWait = 10 * 60 + 15;
 
 //        Date nextCrop = getTimePlusSecond(0);
-        Date nextCrop = getTimePlusSecond(0);
-        Date nextTree = new Date();
-        Date nextStone = new Date();
-        Date nextIron = new Date();
+        Date nextCrop = getTimePlusSecond(510 * 60);
+        Date nextResource = new Date();
 
         Date nextWombatRun = new Date();
         int waitWombat = 5 * 60;
@@ -126,28 +122,11 @@ public class MultiBotMain {
                 System.out.println("Next crops: " + nextCrop.toString());
             }
 
-            if (collectResources && currentDate.compareTo(nextTree) >= 0) {
+            if (collectResources && currentDate.compareTo(nextResource) >= 0) {
                 bot.clickInTab();
-                bot.inventory("Axe");
-                bot.trees();
-                nextTree = getTimePlusSecond(waitTree);
-                System.out.println("Next tree: " + nextTree.toString());
-            }
-
-            if (collectResources && currentDate.compareTo(nextIron) >= 0) {
-                bot.clickInTab();
-                bot.inventory("Stone Pickaxe");
-                bot.iron();
-                nextIron = getTimePlusSecond(waitIron);
-                System.out.println("Next iron: " + nextIron.toString());
-            }
-
-            if (collectResources && currentDate.compareTo(nextStone) >= 0) {
-                bot.clickInTab();
-                bot.inventory("Pickaxe");
-                bot.stones();
-                nextStone = getTimePlusSecond(waitStone);
-                System.out.println("Next stone: " + nextStone.toString());
+                bot.resources();
+                nextResource = getTimePlusSecond(resourceWait);
+                System.out.println("Next tree: " + nextResource.toString());
             }
 
             if (wombat) {

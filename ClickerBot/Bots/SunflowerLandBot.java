@@ -1,13 +1,9 @@
 package ClickerBot.Bots;
 
-import ClickerBot.Bots.ClickerBot;
 import ClickerBot.Config.SunflowerLandConfig;
 import ClickerBot.DTO.CropsInfo;
 import ClickerBot.DTO.FarmData;
-import ClickerBot.DTO.SunflowerLandResult;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.awt.event.InputEvent;
 import java.io.IOException;
@@ -44,35 +40,13 @@ public class SunflowerLandBot {
         }
     }
 
-    public void stones() {
-        for (int[] stone : config.stones) {
-            moveAndClick(stone[0], stone[1]);
+    public void resources() {
+        for (int[] resource : config.resources) {
+            moveAndClick(resource[0], resource[1]);
             clickerBot.sleepM(300);
-            moveAndClick(stone[0], stone[1]);
+            moveAndClick(resource[0], resource[1]);
             clickerBot.sleepM(300);
-            moveAndClick(stone[0], stone[1]);
-            clickerBot.sleepM(300);
-        }
-    }
-
-    public void iron() {
-        for (int[] iron : config.iron) {
-            moveAndClick(iron[0], iron[1]);
-            clickerBot.sleepM(300);
-            moveAndClick(iron[0], iron[1]);
-            clickerBot.sleepM(300);
-            moveAndClick(iron[0], iron[1]);
-            clickerBot.sleepM(300);
-        }
-    }
-
-    public void trees() {
-        for (int[] tree : config.trees) {
-            moveAndClick(tree[0], tree[1]);
-            clickerBot.sleepM(300);
-            moveAndClick(tree[0], tree[1]);
-            clickerBot.sleepM(300);
-            moveAndClick(tree[0], tree[1]);
+            moveAndClick(resource[0], resource[1]);
             clickerBot.sleepM(300);
         }
     }
@@ -122,10 +96,12 @@ public class SunflowerLandBot {
         clickerBot.sleepM(300);
         clickerBot.move(mealX, mealY);
         clickerBot.clickMouse();
+        System.out.println("das");
 
         clickerBot.sleepM(300);
         clickerBot.move(cookButtonX, cookButtonY);
         clickerBot.clickMouse();
+        System.out.println("das 12 31");
     }
 
     public String inventory(String item) {
@@ -170,6 +146,11 @@ public class SunflowerLandBot {
 
         if (item.equals("Cauliflower")) {
             clickerBot.move(config.cauliflower_seed[0], config.cauliflower_seed[1]);
+            clickerBot.clickMouse();
+        }
+
+        if (item.equals("Eggplant")) {
+            clickerBot.move(config.eggplant_seed[0], config.eggplant_seed[1]);
             clickerBot.clickMouse();
         }
 

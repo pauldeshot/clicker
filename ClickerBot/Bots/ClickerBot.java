@@ -61,8 +61,6 @@ public class ClickerBot {
 	public void printCoordinate() {
 		int x = getX();
 		int y = getY();
-		System.out.println("Position X: " + x);
-		System.out.println("Position Y: " + y);
 		System.out.println("{"+x+","+y+"}");
 	}
 }

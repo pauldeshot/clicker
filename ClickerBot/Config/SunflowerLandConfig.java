@@ -1,14 +1,76 @@
 package ClickerBot.Config;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class SunflowerLandConfig {
 
-    // DODAJ TUTAJ SWÓJ NUMER FARMY
-    public int farmId = 1;
+    public SunflowerLandConfig() {
+        setTimes();
+        String path = "config.json";
+        String content = null;
+        try {
+            content = new String(Files.readAllBytes(Paths.get(path)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        JSONObject jsonObject = new JSONObject(content);
 
-    public int[] sunflowerLandTab = {107,15};
+        farmId = (int) jsonObject.get("farmId");
+
+        JSONArray sunflowerLandTabJson = jsonObject.getJSONArray("sunflowerLandTab");
+
+        sunflowerLandTab = new int[sunflowerLandTabJson.length()];
+        for (int i = 0; i < sunflowerLandTabJson.length(); i++) {
+            sunflowerLandTab[i] = sunflowerLandTabJson.getInt(i);
+        }
+
+        JSONObject cropsCoordinates = jsonObject.getJSONObject("cropsCoordinates");
+        JSONObject yCoordinates = cropsCoordinates.getJSONObject("y");
+        JSONObject xCoordinates = cropsCoordinates.getJSONObject("x");
+
+        cropsRowCoordinate = new HashMap<>();
+        Iterator keys = yCoordinates.keys();
+
+        while (keys.hasNext()) {
+            String keyStr = (String) keys.next();
+            Integer keyInt = Integer.parseInt(keyStr);
+            Integer value = yCoordinates.getInt(keyStr);
+            cropsRowCoordinate.put(keyInt, value);
+        }
+
+        keys = xCoordinates.keys();
+
+        while (keys.hasNext()) {
+            String keyStr = (String) keys.next();
+            Integer keyInt = Integer.parseInt(keyStr);
+            Integer value = yCoordinates.getInt(keyStr);
+            cropsColumnCoordinate.put(keyInt, value);
+        }
+
+
+        JSONArray resourcesJson = jsonObject.getJSONArray("resources");
+
+        resources = new int[resourcesJson.length()][];
+        for (int i = 0; i < resourcesJson.length(); i++) {
+            JSONArray innerJsonArray = resourcesJson.getJSONArray(i);
+            resources[i] = new int[innerJsonArray.length()];
+            for (int j = 0; j < innerJsonArray.length(); j++) {
+                resources[i][j] = innerJsonArray.getInt(j);
+            }
+        }
+    }
+
+    public int farmId;
+
+    public int[] sunflowerLandTab;
 
     private void setTimes() {
         cropsTimes = new HashMap<>();
@@ -31,107 +93,31 @@ public class SunflowerLandConfig {
         cropsTimes.put("Radish", 17 * 60 * 60 + 27 * 60);
         cropsTimes.put("Wheat", 17 * 60 * 60 + 27 * 60);
         cropsTimes.put("Kale", 26 * 60 * 60 + 60 * 60);
-
-        // crops rows
-        cropsRowCoordinate = new HashMap<>();
-        cropsRowCoordinate.put(14, 162);
-        cropsRowCoordinate.put(13, 198);
-        cropsRowCoordinate.put(12, 236);
-        cropsRowCoordinate.put(11, 272);
-        cropsRowCoordinate.put(10, 313);
-
-        // crops columns
-        cropsColumnCoordinate = new HashMap<>();
-        cropsColumnCoordinate.put(1, 896);
-        cropsColumnCoordinate.put(2, 934);
-        cropsColumnCoordinate.put(3, 972);
-        cropsColumnCoordinate.put(4, 1011);
-        cropsColumnCoordinate.put(5, 1048);
-        cropsColumnCoordinate.put(6, 1082);
-        cropsColumnCoordinate.put(7, 1121);
-        cropsColumnCoordinate.put(8, 1159);
-        cropsColumnCoordinate.put(9, 1197);
-        cropsColumnCoordinate.put(10, 1233);
-        cropsColumnCoordinate.put(11, 1274);
-        cropsColumnCoordinate.put(12, 1310);
-        cropsColumnCoordinate.put(13, 1350);
     }
 
-    public SunflowerLandConfig() {
+    public int[][] resources;
 
-        setTimes();
-    }
-
-    // Konfiguracja dotycząca położenia elementów
-    public  int[][] fruits = {
-            {760,422},
-            {835,422},
-            {910,425},
-            {985,425},
-            {1060,425},
-            {1135,425},
-            {1210,425},
-            {1285,425},
-            {1360,425},
-    };
-
-    public  int[][] trees = {
-            {829,561},
-            {910,561},
-            {985,561},
-            {1060,561},
-            {1135,561},
-            {1210,561},
-            {1285,561},
-            {1360,561},
-
-            {910,638},
-            {985,638},
-            {1060,638},
-            {1135,638},
-            {1210,638},
-            {1285,638},
-            {1360,638},
-    };
-
-    public  int[][] stones = {
-            {833,204},
-            {874,204},
-
-    };
-
-    public  int[][] iron = {
-            {542,283},
-            {580,283},
-            {618,283},
-            {655,283},
-
-            {542,322},
-            {580,322},
-            {618,322},
-            {655,322}
-    };
-
-    public  int[] blank = {842,173};
-    public  int[] inventory = {1507,279};
-    public  int[] sunflower_seed = {456,364};
-    public  int[] potato_seed = {507,365};
-    public  int[] pumpkin_seed = {575,350};
-    public  int[] carrot_seed = {610,362};
-    public  int[] cabbage_seed = {669,366};
-    public  int[] beetroot_seed = {726,370};
-    public  int[] parsnip_seed = {832,367};
-    public  int[] cauliflower_seed = {779,366};
-    public  int[] axe = {455,514};
-    public  int[] pickaxe = {509,515};
-    public  int[] stone_pickaxe = {564,515};
-    public  int[] firePit = {362,445};
-    public  int[] mashedPotato = {584,378};
-    public  int[] mashedPotatoCookButton = {896,577};
-    public  int[] pumpkinSoup = {640,378};
-    public  int[] pumpkinSoupCookButton = {895,582};
-    public  int[] bumpkinBroth = {694,370};
-    public  int[] bumpkinBrothCookButton = {898,600};
+    public int[] blank = {1859, 707};
+    public int[] inventory = {1864, 335};
+    public int[] sunflower_seed = {647, 505};
+    public int[] potato_seed = {705, 502};
+    public int[] pumpkin_seed = {768, 503};
+    public int[] carrot_seed = {828, 505};
+    public int[] cabbage_seed = {889, 502};
+    public int[] beetroot_seed = {949, 502};
+    public int[] cauliflower_seed = {1011, 504};
+    public int[] parsnip_seed = {1064, 502};
+    public int[] eggplant_seed = {1128, 505};
+    public int[] axe = {652, 670};
+    public int[] pickaxe = {709, 672};
+    public int[] stone_pickaxe = {768, 672};
+    public int[] firePit = {622, 523};
+    public int[] mashedPotato = {793, 529};
+    public int[] mashedPotatoCookButton = {1142, 731};
+    public int[] pumpkinSoup = {858, 528};
+    public int[] pumpkinSoupCookButton = {1139, 743};
+    public int[] bumpkinBroth = {919, 522};
+    public int[] bumpkinBrothCookButton = {1138, 764};
 
     public Map<String, Integer> cropsTimes;
     public Map<String, Integer> mealsTimes;
