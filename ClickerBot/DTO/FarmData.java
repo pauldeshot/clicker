@@ -8,4 +8,6 @@ public class FarmData {
     public Map<String, CropsInfo> crops;
     public Map<String, Integer> seeds;
 
+    public PotionHouse potionHouse;
+
 }

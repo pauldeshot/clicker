@@ -29,6 +29,19 @@ public class SunflowerLandConfig {
         blank = getCoordinate(jsonObject, "blank");
         inventory = getCoordinate(jsonObject, "inventory");
 
+        //potion house
+        JSONObject potionHouse = jsonObject.getJSONObject("potionHouse");
+        startGameButton = getCoordinate(potionHouse, "startGameButton");
+        mixPotionButton = getCoordinate(potionHouse, "mixPotionButton");
+        addToMixButton = getCoordinate(potionHouse, "addToMixButton");
+        potion1 = getCoordinate(potionHouse, "potion1");
+        potion2 = getCoordinate(potionHouse, "potion2");
+        potion3 = getCoordinate(potionHouse, "potion3");
+        potion4 = getCoordinate(potionHouse, "potion4");
+        potion5 = getCoordinate(potionHouse, "potion5");
+        potion6 = getCoordinate(potionHouse, "potion6");
+        potion7 = getCoordinate(potionHouse, "potion7");
+
         JSONObject cropsCoordinates = jsonObject.getJSONObject("cropsCoordinates");
         JSONObject yCoordinates = cropsCoordinates.getJSONObject("y");
         JSONObject xCoordinates = cropsCoordinates.getJSONObject("x");
@@ -83,6 +96,8 @@ public class SunflowerLandConfig {
         pumpkinSoupCookButton = getCoordinate(meals, "pumpkinSoupCookButton");
         bumpkinBroth = getCoordinate(meals, "bumpkinBroth");
         bumpkinBrothCookButton = getCoordinate(meals, "bumpkinBrothCookButton");
+        popcorn = getCoordinate(meals, "popcorn");
+        popcornButton = getCoordinate(meals, "popcornButton");
     }
 
     public int[] getCoordinate(JSONObject arr, String element) {
@@ -105,6 +120,7 @@ public class SunflowerLandConfig {
         mealsTimes.put("Mashed Potato", 54);
         mealsTimes.put("Pumpkin Soup", 2 * 60 + 42);
         mealsTimes.put("Bumpkin Broth", 18 * 60);
+        mealsTimes.put("Popcorn", 10 * 60 + 49);
 
 
         cropsTimes.put("Sunflower", 46);
@@ -140,10 +156,24 @@ public class SunflowerLandConfig {
     public int[] pumpkinSoupCookButton;
     public int[] bumpkinBroth;
     public int[] bumpkinBrothCookButton;
+    public int[] popcorn;
+    public int[] popcornButton;
 
     public Map<String, Integer> cropsTimes;
     public Map<String, Integer> mealsTimes;
 
     public Map<Integer, Integer> cropsRowCoordinate;
     public Map<Integer, Integer> cropsColumnCoordinate;
+
+    //potion house
+    public int[] startGameButton;
+    public int[] mixPotionButton;
+    public int[] addToMixButton;
+    public int[] potion1;
+    public int[] potion2;
+    public int[] potion3;
+    public int[] potion4;
+    public int[] potion5;
+    public int[] potion6;
+    public int[] potion7;
 }

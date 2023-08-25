@@ -87,5 +87,17 @@
     "pumpkinSoupCookButton": [1139, 743],
     "bumpkinBroth": [919, 522],
     "bumpkinBrothCookButton": [1138, 764]
-  }
+  },
+  "potionHouse": {
+      "startGameButton": [2883,801],
+      "mixPotionButton": [2762,626],
+      "addToMixButton": [2883,797],
+      "potion1": [2757,863],
+      "potion2": [2796,863],
+      "potion3": [2838,863],
+      "potion4": [2879,863],
+      "potion5": [2917,863],
+      "potion6": [2962,863],
+      "potion7": [2998,863]
+    }
 }

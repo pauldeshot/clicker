@@ -1,8 +1,8 @@
 package ClickerBot.Bots;
 
 import ClickerBot.Config.SunflowerLandConfig;
-import ClickerBot.DTO.CropsInfo;
-import ClickerBot.DTO.FarmData;
+import ClickerBot.DTO.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.awt.event.InputEvent;
@@ -93,10 +93,17 @@ public class SunflowerLandBot {
             cookButtonY = config.bumpkinBrothCookButton[1] + rand.nextInt(randOffset);
         }
 
-        clickerBot.sleepM(300);
-        clickerBot.move(mealX, mealY);
-        clickerBot.clickMouse();
-        System.out.println("das");
+        if (meal.equals("Popcorn")) {
+            mealX = config.popcorn[0] + rand.nextInt(randOffset);
+            mealY = config.popcorn[1] + rand.nextInt(randOffset);
+            cookButtonX = config.popcornButton[0] + rand.nextInt(randOffset);
+            cookButtonY = config.popcornButton[1] + rand.nextInt(randOffset);
+        }
+
+//        clickerBot.sleepM(300);
+//        clickerBot.move(mealX, mealY);
+//        clickerBot.clickMouse();
+//        System.out.println("das");
 
         clickerBot.sleepM(300);
         clickerBot.move(cookButtonX, cookButtonY);
@@ -160,6 +167,39 @@ public class SunflowerLandBot {
         clickerBot.sleepM(1000);
 
         return item;
+    }
+
+    private PotionHouse convertJsonToPotionHouse(JSONObject jsonObject) {
+        JSONObject game = jsonObject.getJSONObject("game");
+        JSONArray attempts = game.getJSONArray("attempts");
+
+        PotionHouse potionHouse = new PotionHouse();
+        potionHouse.attempt1 = convertJsonArrayToAttempt(attempts.getJSONArray(0));
+        if (!attempts.isNull(1)) {
+            potionHouse.attempt2 = convertJsonArrayToAttempt(attempts.getJSONArray(1));
+        }
+
+        return potionHouse;
+    }
+
+    private PotionHouseAttempt convertJsonArrayToAttempt(JSONArray array) {
+        PotionHouseAttempt attempt = new PotionHouseAttempt();
+
+        attempt.column1 = convertJsonObjectToPotionColumn(array.getJSONObject(0));
+        attempt.column2 = convertJsonObjectToPotionColumn(array.getJSONObject(1));
+        attempt.column3 = convertJsonObjectToPotionColumn(array.getJSONObject(2));
+        attempt.column4 = convertJsonObjectToPotionColumn(array.getJSONObject(3));
+
+        return attempt;
+    }
+
+    private PotionColumn convertJsonObjectToPotionColumn(JSONObject obj) {
+        PotionColumn column = new PotionColumn();
+
+        column.potion = obj.getString("potion");
+        column.status = obj.getString("status");
+
+        return column;
     }
 
     public FarmData checkFarm() {
@@ -273,6 +313,9 @@ public class SunflowerLandBot {
             seeds.put("Kale", 0);
         }
 
+
+        //potion house data
+        farmData.potionHouse = convertJsonToPotionHouse(state.getJSONObject("potionHouse"));
 
         farmData.seeds = seeds;
         return farmData;

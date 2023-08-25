@@ -32,6 +32,7 @@ public class MultiBotMain {
         mealsCount.put("Mashed Potato", 0);
         mealsCount.put("Pumpkin Soup", 0);
         mealsCount.put("Bumpkin Broth", 0);
+        mealsCount.put("Popcorn", 0);
 
         String[] crops = {
 //            "Cauliflower",
@@ -47,13 +48,15 @@ public class MultiBotMain {
         String[] meals = {
 //                "Mashed Potato",
 //                "Pumpkin Soup",
-                "Bumpkin Broth"
+//                "Bumpkin Broth",
+                "Popcorn"
         };
 
         Map<String, Integer> mealsTarget = new HashMap<>();
-//        mealsTarget.put("Mashed Potato", 100);
-//        mealsTarget.put("Pumpkin Soup", 100);
+        mealsTarget.put("Mashed Potato", 100);
+        mealsTarget.put("Pumpkin Soup", 100);
         mealsTarget.put("Bumpkin Broth", 90);
+        mealsTarget.put("Popcorn", 60);
 
         Map<Integer, String> cropsQueue = new HashMap<>();
         Map<Integer, String> mealsQueue = new HashMap<>();
@@ -66,9 +69,9 @@ public class MultiBotMain {
             mealsQueue.put(i, meals[i]);
         }
 
-        boolean farmCrops = true;
-        boolean cookMeal = false;
-        boolean collectResources = true;
+        boolean farmCrops = false;
+        boolean cookMeal = true;
+        boolean collectResources = false;
         boolean wombat = false;
 
         int currentCrop = 0;
@@ -94,7 +97,7 @@ public class MultiBotMain {
                     currentDate.compareTo(nextMeal) >= 0) {
 
                 if (mealsQueue.containsKey(currentMeal) &&
-                        mealsCount.get(mealsQueue.get(currentMeal)) >= mealsTarget.get(mealsQueue.get(currentMeal))) {
+                    mealsCount.get(mealsQueue.get(currentMeal)) >= mealsTarget.get(mealsQueue.get(currentMeal))) {
                     currentMeal++;
                     nextMeal = new Date();
                 } else {

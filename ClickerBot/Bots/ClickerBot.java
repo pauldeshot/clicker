@@ -63,5 +63,11 @@ public class ClickerBot {
 		int y = getY();
 		System.out.println("{"+x+","+y+"}");
 	}
+
+	public void moveAndClick(int x, int y) {
+		move(x, y);
+		clickMouse();
+		sleepM(100);
+	}
 }
 
