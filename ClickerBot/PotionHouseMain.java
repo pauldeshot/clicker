@@ -58,7 +58,7 @@ public class PotionHouseMain {
         clickerBot.moveAndClick(config.mixPotionButton[0], config.mixPotionButton[1]);
 
         // waiting for save current row
-        clickerBot.sleep(15);
+        clickerBot.sleep(12);
 
 
         String[] correctRow = {
@@ -142,12 +142,12 @@ public class PotionHouseMain {
         //col 3
         clickInPotion("Happy Hooch", config);
         //col 2
-        clickRandom(config, bomb, incorrect);
+        clickRandom(config, bomb, incorrect, 4, almost);
 
         clickerBot.moveAndClick(config.mixPotionButton[0], config.mixPotionButton[1]);
 
         // waiting for save current row
-        clickerBot.sleep(15);
+        clickerBot.sleep(12);
         farmData = bot.checkFarm();
         if (bomb == null) {
             bomb = searchBombInAttempt(farmData.potionHouse.attempt2);
@@ -201,39 +201,50 @@ public class PotionHouseMain {
         if (correctRow[0] != null) {
             clickInPotion(correctRow[0], config);
         } else {
-            clickRandom(config, bomb, incorrect);
+            clickRandom(config, bomb, incorrect, 1, almost);
         }
         //col 2
         if (correctRow[1] != null) {
             clickInPotion(correctRow[1], config);
         } else {
-            clickRandom(config, bomb, incorrect);
+            clickRandom(config, bomb, incorrect, 2, almost);
         }
         //col 3
         if (correctRow[2] != null) {
             clickInPotion(correctRow[2], config);
         } else {
-            clickRandom(config, bomb, incorrect);
+            clickRandom(config, bomb, incorrect, 3, almost);
         }
         //col 2
         if (correctRow[3] != null) {
             clickInPotion(correctRow[3], config);
         } else {
-            clickRandom(config, bomb, incorrect);
+            clickRandom(config, bomb, incorrect, 4, almost);
         }
 
         clickerBot.moveAndClick(config.mixPotionButton[0], config.mixPotionButton[1]);
-        clickerBot.sleep(15);
+        clickerBot.sleep(12);
     }
 
-    private static void clickRandom(SunflowerLandConfig config, String bomb, String[] incorrect) {
+    private static void clickRandom(
+            SunflowerLandConfig config,
+            String bomb,
+            String[] incorrect,
+            int col,
+            String[] almost
+    ) {
         Random random = new Random();
         int potion = random.nextInt(7);
 
         if (bomb == null) {
             clickInPotion(potions[potion], config);
         } else {
-            while (contains(incorrect, potions[potion]) || bomb.equals(potions[potion])) {
+            while (
+                    contains(incorrect, potions[potion])
+                    || bomb.equals(potions[potion])
+                    || (almost[col-1] != null && almost[col-1].equals(potions[potion]))
+                    || (almost[col-1+4]  != null && almost[col-1+4].equals(potions[potion]))
+            ) {
                 potion = random.nextInt(7);
             }
             clickInPotion(potions[potion], config);

@@ -22,13 +22,7 @@ public class WombatConfig {
     public int[] requestAll = {758,532};
     public int[] helpAll = {1423,786};
 
-    public WombatConfig(int waitRun, int maxRuns) {
-        this.waitRun = waitRun;
-        this.maxRuns = maxRuns;
-    }
-
     public WombatConfig() {
-
         String path = "wombat.json";
         String content = null;
         try {
