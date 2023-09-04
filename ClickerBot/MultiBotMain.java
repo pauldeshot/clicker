@@ -38,9 +38,9 @@ public class MultiBotMain {
 //            "Cauliflower",
 //            "Parsnip",
 //            "Beetroot",
-            "Cabbage",
-            "Carrot",
-            "Pumpkin",
+//            "Cabbage",
+//            "Carrot",
+//            "Pumpkin",
 //            "Potato",
             "Sunflower"
         };
@@ -69,8 +69,8 @@ public class MultiBotMain {
             mealsQueue.put(i, meals[i]);
         }
 
-        boolean farmCrops = false;
-        boolean cookMeal = true;
+        boolean farmCrops = true;
+        boolean cookMeal = false;
         boolean collectResources = false;
         boolean wombat = false;
 
