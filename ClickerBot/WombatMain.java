@@ -20,19 +20,21 @@ public class WombatMain {
 
         Lock lock = new ReentrantLock();
 
-        int finishedRuns = 0;
+        int finishedRuns = 1;
 
         while (true) {
             if (lock.tryLock()) {
                 try {
-                    WombatResult result = bot.run(currentWaitingRun);
-                    clickerBot.sleep(1);
-                    currentWaitingRun += result.totalWaitingTime;
-
                     if (finishedRuns % 2 == 0) {
                         bot.claimTreasure();
                         currentWaitingRun += 96;
                     }
+
+                    WombatResult result = bot.run(currentWaitingRun);
+                    clickerBot.sleep(1);
+                    currentWaitingRun += result.totalWaitingTime;
+
+
 
                     if (result.resetTime) {
                         finishedRuns++;
