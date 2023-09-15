@@ -55,18 +55,26 @@ Najwazniejsze dla nas są `{1056,440}` ten kawałek kodu będziemy kopiować bez
 {
   "waitRun": 301,
   "maxRuns": 180,
-  "runButton": [750,493],
-  "rewardButton": [796,638],
+  "guildMode": 1,
+  "collectCandy": 1,
+  "runButton": [989,539],
+  "rewardButton": [996,749],
   "wombatTab": [370,12],
   "refresh": [87,52],
   "treasure": [1440,150],
   "requestAll": [758,532],
-  "helpAll": [1423,786]
+  "helpAll": [1423,786],
+  "claimCandyButton": [998,633],
+  "runWithoutCandy": [998,633],
+  "dontAskAgain": [998,633],
+  "singTransactionButton": [383,636]
 }
 ```
 2) Ustawiamy w `waitRun` czas w sekundach ile trwa nasz run + 1 sekunda zapasu (301 jest dla 5min runów)
 3) Dla `maxRuns` ustalamy ile runów ma zrobić podczas jednego uruchomienia.
-4) Teraz ustawiamy koordynaty dla poszczególnych przycisków interfacu (opis jak odczytać koordynaty jest wyżej `Odczytywanie koordynatów`)
+4) `guildMode` jest to opcja dla tych co mają wykupiony przycisk pomocy wszystkim. ustawione na `1` oznacza, że bot będzie klikał w ten przycisk, a utawienie `0` wyłącza tą funkcjonalność
+5) `collectCandy` ustawiamy, czy ma zbierać każdego cukierka (wtedy jak jest płatny to płaci), albo puszcza run bez cukierka (zbieranie cukierka `1`, pominięcie cukierka `0`)
+6Teraz ustawiamy koordynaty dla poszczególnych przycisków interfacu (opis jak odczytać koordynaty jest wyżej `Odczytywanie koordynatów`)
 
 runButton - to przycisk do startu nowego runu
 rewardButton - to przycisk, który klikamy po zakończeniu się runu
@@ -74,19 +82,37 @@ wombatTab - tutaj podejmy współrzędne naszej zakładki w przeglądarce z bote
 refresh - tutaj podejemy współrzędne przycisku odświeżenia strony w przeglądarce
 treasure - tataj podajemy współrzędne przycisku z zbieraniem skarbu
 requestAll - tutaj podejemy współrzędne przycisku do poproszenia o pomoc wszystkich (jeżeli masz kupioną tą opcje, to pod aktualnym pozostałym czasem przebiegu się on pokazuje)
-helpAll - tutaj podejym współrzeðne przycisku do udzielania pomocy (jest on w prawym dolnym rogu obok menu po odpaleniu kolejengo runu)
+helpAll - tutaj podejym współrzedne przycisku do udzielania pomocy (jest on w prawym dolnym rogu obok menu po odpaleniu kolejengo runu)
+claimCandyButton - są to współrzedne przycisku do zebrania cukierka, ALE TEGO CO JEST W OKIENKU, KTÓRE WYSKAKUJE PO KLIKNIĘCIU PRZYCISKU `Send Wombat to Dungeon`
+singTransactionButton - koordynaty przycisku SING z okienka walleta WOMBAT (ono zawsze wyskakuje w tym samym miejscu na ekranie, wiec jak go nie przesuniesz to będzie zawsze w tym samym miejscu)
+dontAskAgain - koordynaty checkboxa aby zaznaczyć `Don't ask again`
+runWithoutCandy - koordynaty przycisku `Go without candy`
 
 UWAGA! - Jak nie masz wykupionej pomocy dla wszystkich, to `requestAll` i `helpAll` wpisz koordynaty jakiegoś pustego miejsca na strony, tak aby bot mógł tam sobie kliknąć, ale nie wykonał żadnej akcji
 
 ## Odpalanie bota dla wombat
 
 1) W pierwszej kolejności kompilujemy naszego bota (tak samo jak robiliśmy to dla programu do odczytywania koordynatów).
+
+Dla linux/mac
 ```shell
-javac -sourcepath . -cp json-20140107.jar ClickerBot/WombatMain.java
+javac -sourcepath . -cp "json-20140107.jar:." ClickerBot/WombatMain.java
 ```
-2) Odpalamy bota
+
+Dla windows
 ```shell
-java ClickerBot.WombatMain
+javac -sourcepath . -cp "json-20140107.jar;." ClickerBot/WombatMain.java
+```
+
+2) Odpalamy bota
+Dla linux/mac
+```shell
+java -cp "json-20140107.jar:." ClickerBot.WombatMain
+```
+
+Dla windows
+```shell
+java -cp "json-20140107.jar;." ClickerBot.WombatMain
 ```
 
 Pogram po 2 sekunsach zacznie działać :)

@@ -1,6 +1,5 @@
 package ClickerBot.Bots;
 
-import ClickerBot.Bots.ClickerBot;
 import ClickerBot.Config.WombatConfig;
 import ClickerBot.DTO.WombatResult;
 
@@ -26,41 +25,6 @@ public class WombatBot {
     public WombatResult run (int currentWaitingRun) {
         WombatResult result = new WombatResult();
 
-        Date date = new Date();
-        int minute = date.getMinutes();
-        int hour = date.getHours();
-
-        if (hour == 2 && minute < 24) {
-            clickerBot.sleep(60);
-            result.resetTime = true;
-            return result;
-        }
-
-        if (hour == 3 && minute == 35) {
-            clickerBot.sleep(1);
-            System.out.println("Collect treasure.");
-            clickInTab();
-            refresh();
-            clickerBot.sleep(10);
-            claim();
-            treasureClaim();
-            refresh();
-            result.resetTime = true;
-            runs = 0;
-            clickerBot.sleep(90);
-            return result;
-        }
-
-        if (hour > lastRefreshHour && minute > lastRefreshMinute) {
-            lastRefreshHour = hour;
-            lastRefreshMinute = minute;
-
-            clickInTab();
-            refresh();
-            clickerBot.sleep(15);
-            result.totalWaitingTime += 15;
-        }
-
         if (currentWaitingRun >= config.waitRun || currentWaitingRun == -1) {
             clickerBot.sleep(1);
             clickInTab();
@@ -81,7 +45,7 @@ public class WombatBot {
             System.out.println("Run: "+ runs);
         }
 
-        if (!this.helpRequested) {
+        if (this.config.guildMode == 1 && !this.helpRequested) {
             clickerBot.sleep(1);
             clickInTab();
             this.helpRequested = true;
@@ -93,7 +57,15 @@ public class WombatBot {
         return result;
     }
 
+    public void claimTreasure () {
+        treasureClaim();
+        clickerBot.sleep(90);
+    }
+
     private void treasureClaim() {
+        clickerBot.move(config.treasure[0], config.treasure[1]);
+        clickerBot.clickMouse();
+        clickerBot.sleep(3);
         clickerBot.move(config.treasure[0], config.treasure[1]);
         clickerBot.clickMouse();
         clickerBot.sleep(3);
@@ -101,6 +73,12 @@ public class WombatBot {
 
     private void startRun() {
         clickerBot.move(config.runButton[0], config.runButton[1]);
+        clickerBot.clickMouse();
+        clickerBot.sleep(3);
+        clickerBot.move(config.dontAskAgain[0], config.dontAskAgain[1]);
+        clickerBot.clickMouse();
+        clickerBot.sleep(3);
+        clickerBot.move(config.runWithoutCandy[0], config.runWithoutCandy[1]);
         clickerBot.clickMouse();
     }
 

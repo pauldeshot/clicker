@@ -20,6 +20,8 @@ public class WombatMain {
 
         Lock lock = new ReentrantLock();
 
+        int finishedRuns = 0;
+
         while (true) {
             if (lock.tryLock()) {
                 try {
@@ -27,7 +29,13 @@ public class WombatMain {
                     clickerBot.sleep(1);
                     currentWaitingRun += result.totalWaitingTime;
 
+                    if (finishedRuns % 2 == 0) {
+                        bot.claimTreasure();
+                        currentWaitingRun += 96;
+                    }
+
                     if (result.resetTime) {
+                        finishedRuns++;
                         currentWaitingRun = 0;
                     }
                 } finally {

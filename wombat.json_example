@@ -1,11 +1,17 @@
 {
   "waitRun": 301,
   "maxRuns": 180,
-  "runButton": [750,493],
-  "rewardButton": [796,638],
+  "guildMode": 1,
+  "collectCandy": 1,
+  "runButton": [989,539],
+  "rewardButton": [996,749],
   "wombatTab": [370,12],
   "refresh": [87,52],
   "treasure": [1440,150],
   "requestAll": [758,532],
-  "helpAll": [1423,786]
+  "helpAll": [1423,786],
+  "claimCandyButton": [998,633],
+  "runWithoutCandy": [998,633],
+  "dontAskAgain": [998,633],
+  "singTransactionButton": [383,636]
 }
