@@ -75,11 +75,22 @@ public class WombatBot {
         clickerBot.move(config.runButton[0], config.runButton[1]);
         clickerBot.clickMouse();
         clickerBot.sleep(3);
-        clickerBot.move(config.dontAskAgain[0], config.dontAskAgain[1]);
-        clickerBot.clickMouse();
-        clickerBot.sleep(3);
-        clickerBot.move(config.runWithoutCandy[0], config.runWithoutCandy[1]);
-        clickerBot.clickMouse();
+
+        if (config.collectCandy == 1) {
+            clickerBot.move(config.claimCandyButton[0], config.claimCandyButton[1]);
+            clickerBot.clickMouse();
+            clickerBot.sleep(3);
+            clickerBot.move(config.singTransactionButton[0], config.singTransactionButton[1]);
+            clickerBot.clickMouse();
+        } else {
+            clickerBot.move(config.dontAskAgain[0], config.dontAskAgain[1]);
+            clickerBot.clickMouse();
+            clickerBot.sleep(3);
+            clickerBot.move(config.runWithoutCandy[0], config.runWithoutCandy[1]);
+            clickerBot.clickMouse();
+        }
+
+
     }
 
     private void requestHelp(int waitingTime) {
