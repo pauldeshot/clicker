@@ -114,7 +114,7 @@ public class SunflowerLandBot {
     public String inventory(String item) {
         clickerBot.move(config.inventory[0], config.inventory[1]);
         clickerBot.clickMouse();
-        clickerBot.sleepM(300);
+        clickerBot.sleepM(1000);
 
         if (item.equals("Sunflower")) {
             clickerBot.move(config.sunflower_seed[0], config.sunflower_seed[1]);
@@ -174,7 +174,9 @@ public class SunflowerLandBot {
         JSONArray attempts = game.getJSONArray("attempts");
 
         PotionHouse potionHouse = new PotionHouse();
-        potionHouse.attempt1 = convertJsonArrayToAttempt(attempts.getJSONArray(0));
+        if (!attempts.isNull(0)) {
+            potionHouse.attempt1 = convertJsonArrayToAttempt(attempts.getJSONArray(0));
+        }
         if (!attempts.isNull(1)) {
             potionHouse.attempt2 = convertJsonArrayToAttempt(attempts.getJSONArray(1));
         }

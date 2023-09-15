@@ -20,7 +20,7 @@ public class MultiBotMain {
 
         clickerBot = new ClickerBot();
         System.out.println("Program uruchomi się za 2 sekundy.");
-        clickerBot.sleepM(500);
+        clickerBot.sleepM(2000);
 
         SunflowerLandConfig config = new SunflowerLandConfig();
         SunflowerLandBot bot = new SunflowerLandBot(config, clickerBot);
@@ -34,27 +34,42 @@ public class MultiBotMain {
         mealsCount.put("Bumpkin Broth", 0);
         mealsCount.put("Popcorn", 0);
 
+        String Eggplant = "Eggplant";
+        String Cauliflower = "Cauliflower";
+        String Parsnip = "Parsnip";
+        String Beetroot = "Beetroot";
+        String Cabbage = "Cabbage";
+        String Carrot = "Carrot";
+        String Pumpkin = "Pumpkin";
+        String Potato = "Potato";
+        String Sunflower = "Sunflower";
+
         String[] crops = {
-//            "Cauliflower",
-//            "Parsnip",
-//            "Beetroot",
-//            "Cabbage",
-//            "Carrot",
-//            "Pumpkin",
-//            "Potato",
-            "Sunflower"
+                Potato,
+                Potato,
+                Sunflower,
+                Sunflower,
+                Sunflower,
+                Sunflower,
+                Sunflower,
+                Sunflower,
+                Sunflower,
+                Sunflower,
+                Sunflower,
+                Sunflower,
+                Sunflower
         };
 
         String[] meals = {
 //                "Mashed Potato",
 //                "Pumpkin Soup",
-//                "Bumpkin Broth",
-                "Popcorn"
+                "Bumpkin Broth",
+//                "Popcorn"
         };
 
         Map<String, Integer> mealsTarget = new HashMap<>();
         mealsTarget.put("Mashed Potato", 100);
-        mealsTarget.put("Pumpkin Soup", 100);
+        mealsTarget.put("Pumpkin Soup", 200);
         mealsTarget.put("Bumpkin Broth", 90);
         mealsTarget.put("Popcorn", 60);
 
@@ -72,7 +87,7 @@ public class MultiBotMain {
         boolean farmCrops = true;
         boolean cookMeal = false;
         boolean collectResources = false;
-        boolean wombat = false;
+        boolean wombat = true;
 
         int currentCrop = 0;
         int currentMeal = 0;
@@ -80,7 +95,7 @@ public class MultiBotMain {
         int resourceWait = 10 * 60 + 15;
 
         Date nextCrop = getTimePlusSecond(0);
-//        Date nextCrop = getTimePlusSecond(510 * 60);
+//        Date nextCrop = getTimePlusSecond(3 * 60 * 60 + 3 * 60);
         Date nextResource = new Date();
 
         Date nextWombatRun = new Date();
@@ -92,12 +107,33 @@ public class MultiBotMain {
         while (true) {
             Date currentDate = new Date();
 
-            if  (cookMeal &&
+            if (farmCrops && cropsQueue.containsKey(currentCrop) && currentDate.compareTo(nextCrop) >= 0) {
+                bot.clickInTab();
+                FarmData farmData = bot.checkFarm();
+                bot.inventory(cropsQueue.get(currentCrop));
+                nextCrop = getTimePlusSecond(config.cropsTimes.get(cropsQueue.get(currentCrop)) + 5);
+                bot.crops(farmData, true);
+                currentCrop++;
+//                if (farmData.seeds.get(cropsQueue.get(currentCrop)) - 43 <= 0) {
+//                    System.out.println("Chang seed: " + cropsQueue.get(currentCrop));
+//                    nextCrop = new Date();
+//                }
+                System.out.println("Next crops: " + nextCrop.toString());
+            }
+
+            if (collectResources && currentDate.compareTo(nextResource) >= 0) {
+                bot.clickInTab();
+                bot.resources();
+                nextResource = getTimePlusSecond(resourceWait);
+                System.out.println("Next tree: " + nextResource.toString());
+            }
+
+            if (cookMeal &&
                     mealsQueue.containsKey(currentMeal) &&
                     currentDate.compareTo(nextMeal) >= 0) {
 
                 if (mealsQueue.containsKey(currentMeal) &&
-                    mealsCount.get(mealsQueue.get(currentMeal)) >= mealsTarget.get(mealsQueue.get(currentMeal))) {
+                        mealsCount.get(mealsQueue.get(currentMeal)) >= mealsTarget.get(mealsQueue.get(currentMeal))) {
                     currentMeal++;
                     nextMeal = new Date();
                 } else {
@@ -108,28 +144,6 @@ public class MultiBotMain {
                     nextMeal = getTimePlusSecond(config.mealsTimes.get(mealsQueue.get(currentMeal)) + 2);
                     System.out.println("Next meal: " + nextMeal.toString());
                 }
-            }
-
-            if (farmCrops && cropsQueue.containsKey(currentCrop) && currentDate.compareTo(nextCrop) >= 0) {
-                bot.clickInTab();
-                FarmData farmData = bot.checkFarm();
-                bot.inventory(cropsQueue.get(currentCrop));
-                nextCrop = getTimePlusSecond(config.cropsTimes.get(cropsQueue.get(currentCrop)) + 5);
-                bot.crops(farmData, true);
-
-                if (farmData.seeds.get(cropsQueue.get(currentCrop)) - 43 <= 0) {
-                    System.out.println("Chang seed: " + cropsQueue.get(currentCrop));
-                    currentCrop++;
-                    nextCrop = new Date();
-                }
-                System.out.println("Next crops: " + nextCrop.toString());
-            }
-
-            if (collectResources && currentDate.compareTo(nextResource) >= 0) {
-                bot.clickInTab();
-                bot.resources();
-                nextResource = getTimePlusSecond(resourceWait);
-                System.out.println("Next tree: " + nextResource.toString());
             }
 
             if (wombat) {

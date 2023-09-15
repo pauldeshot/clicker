@@ -33,7 +33,6 @@ public class SunflowerLandConfig {
         JSONObject potionHouse = jsonObject.getJSONObject("potionHouse");
         startGameButton = getCoordinate(potionHouse, "startGameButton");
         mixPotionButton = getCoordinate(potionHouse, "mixPotionButton");
-        addToMixButton = getCoordinate(potionHouse, "addToMixButton");
         potion1 = getCoordinate(potionHouse, "potion1");
         potion2 = getCoordinate(potionHouse, "potion2");
         potion3 = getCoordinate(potionHouse, "potion3");
@@ -168,7 +167,6 @@ public class SunflowerLandConfig {
     //potion house
     public int[] startGameButton;
     public int[] mixPotionButton;
-    public int[] addToMixButton;
     public int[] potion1;
     public int[] potion2;
     public int[] potion3;

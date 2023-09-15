@@ -13,6 +13,8 @@ import java.util.*;
 public class PotionHouseMain {
     static ClickerBot clickerBot;
 
+    static int gameCounter = 0;
+
     static String[] potions = {
             "Bloom Boost",
             "Dream Drip",
@@ -129,10 +131,16 @@ public class PotionHouseMain {
     }
 
     private static void nextGame(ClickerBot clickerBot, List<List<String>> combinations) {
+
+        gameCounter++;
         SunflowerLandConfig config = new SunflowerLandConfig();
         SunflowerLandBot bot = new SunflowerLandBot(config, clickerBot);
 
-        clickerBot.moveAndClick(config.startGameButton[0], config.startGameButton[1]);
+        if (gameCounter == 1) {
+            clickerBot.moveAndClick(config.startGameButton[0], config.startGameButton[1]);
+        } else {
+            clickerBot.moveAndClick(config.startGameButton[0], config.startGameButton[1]+10);
+        }
 
         clickInPotion("Bloom Boost", config);
         clickInPotion("Earth Essence", config);
@@ -140,7 +148,7 @@ public class PotionHouseMain {
         clickInPotion("Organic Oasis", config);
 
         clickerBot.moveAndClick(config.mixPotionButton[0], config.mixPotionButton[1]);
-        clickerBot.sleep(3);
+        clickerBot.sleep(15);
 
         // attempt 2
         clickInPotion("Dream Drip", config);
@@ -150,7 +158,7 @@ public class PotionHouseMain {
         clickerBot.moveAndClick(config.mixPotionButton[0], config.mixPotionButton[1]);
 
         // waiting for save current row
-        clickerBot.sleep(12);
+        clickerBot.sleep(15);
         FarmData farmData = bot.checkFarm();
         PotionHouse potionHouse = farmData.potionHouse;
 
@@ -284,31 +292,24 @@ public class PotionHouseMain {
     private static void clickInPotion(String potion, SunflowerLandConfig config) {
         if (potion.equals("Bloom Boost")) {
             clickerBot.moveAndClick(config.potion1[0], config.potion1[1]);
-            clickerBot.moveAndClick(config.addToMixButton[0], config.addToMixButton[1]);
         }
         if (potion.equals("Dream Drip")) {
             clickerBot.moveAndClick(config.potion2[0], config.potion2[1]);
-            clickerBot.moveAndClick(config.addToMixButton[0], config.addToMixButton[1]);
         }
         if (potion.equals("Earth Essence")) {
             clickerBot.moveAndClick(config.potion3[0], config.potion3[1]);
-            clickerBot.moveAndClick(config.addToMixButton[0], config.addToMixButton[1]);
         }
         if (potion.equals("Flower Power")) {
             clickerBot.moveAndClick(config.potion4[0], config.potion4[1]);
-            clickerBot.moveAndClick(config.addToMixButton[0], config.addToMixButton[1]);
         }
         if (potion.equals("Silver Syrup")) {
             clickerBot.moveAndClick(config.potion5[0], config.potion5[1]);
-            clickerBot.moveAndClick(config.addToMixButton[0], config.addToMixButton[1]);
         }
         if (potion.equals("Happy Hooch")) {
             clickerBot.moveAndClick(config.potion6[0], config.potion6[1]);
-            clickerBot.moveAndClick(config.addToMixButton[0], config.addToMixButton[1]);
         }
         if (potion.equals("Organic Oasis")) {
             clickerBot.moveAndClick(config.potion7[0], config.potion7[1]);
-            clickerBot.moveAndClick(config.addToMixButton[0], config.addToMixButton[1]);
         }
     }
 
