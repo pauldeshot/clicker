@@ -85,6 +85,7 @@ public class SunflowerLandConfig {
         cauliflower_seed = getCoordinate(seeds, "cauliflower");
         parsnip_seed = getCoordinate(seeds, "parsnip");
         eggplant_seed = getCoordinate(seeds, "eggplant");
+        corn_seed = getCoordinate(seeds, "corn");
 
         firePit = getCoordinate(jsonObject, "firePit");
 
@@ -122,18 +123,19 @@ public class SunflowerLandConfig {
         mealsTimes.put("Popcorn", 10 * 60 + 49);
 
 
-        cropsTimes.put("Sunflower", 46);
-        cropsTimes.put("Potato", 3 * 60 + 41);
-        cropsTimes.put("Pumpkin", 22 * 60);
-        cropsTimes.put("Carrot", 44 * 60);
-        cropsTimes.put("Cabbage", 60 * 60 + 28 * 60);
-        cropsTimes.put("Beetroot", 2 * 60 * 60 + 55 * 60);
-        cropsTimes.put("Cauliflower", 5 * 60 * 60 + 49 * 60);
-        cropsTimes.put("Parsnip", 4 * 60 * 60 + 22 * 60);
-        cropsTimes.put("Eggplant", 8 * 60 * 60 + 43 * 60);
-        cropsTimes.put("Radish", 17 * 60 * 60 + 27 * 60);
-        cropsTimes.put("Wheat", 17 * 60 * 60 + 27 * 60);
-        cropsTimes.put("Kale", 26 * 60 * 60 + 60 * 60);
+        cropsTimes.put("Sunflower", 38);
+        cropsTimes.put("Potato", 3 * 60 + 11);
+        cropsTimes.put("Pumpkin", 19 * 60 + 11);
+        cropsTimes.put("Carrot", 38 * 60 + 22);
+        cropsTimes.put("Cabbage", 60 * 60 + 17 * 60);
+        cropsTimes.put("Beetroot", 2 * 60 * 60 + 33 * 60);
+        cropsTimes.put("Cauliflower", 5 * 60 * 60 + 6 * 60);
+        cropsTimes.put("Parsnip", 7 * 60 * 60 + 40 * 60);
+        cropsTimes.put("Eggplant", 7 * 60 * 60 + 40 * 60);
+        cropsTimes.put("Corn", 9 * 60 * 60 + 35 * 60);
+        cropsTimes.put("Radish", 15 * 60 * 60 + 20 * 60);
+        cropsTimes.put("Wheat", 15 * 60 * 60 + 20 * 60);
+        cropsTimes.put("Kale", 23 * 60 * 60 + 60);
     }
 
     public int[][] resources;
@@ -148,6 +150,7 @@ public class SunflowerLandConfig {
     public int[] cauliflower_seed;
     public int[] parsnip_seed;
     public int[] eggplant_seed;
+    public int[] corn_seed;
     public int[] firePit;
     public int[] mashedPotato;
     public int[] mashedPotatoCookButton;

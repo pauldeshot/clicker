@@ -34,6 +34,7 @@ public class MultiBotMain {
         mealsCount.put("Bumpkin Broth", 0);
         mealsCount.put("Popcorn", 0);
 
+        String Corn = "Corn";
         String Eggplant = "Eggplant";
         String Cauliflower = "Cauliflower";
         String Parsnip = "Parsnip";
@@ -45,6 +46,19 @@ public class MultiBotMain {
         String Sunflower = "Sunflower";
 
         String[] crops = {
+                Carrot,
+                Cabbage,
+                Cabbage,
+                Carrot,
+                Pumpkin,
+                Pumpkin,
+                Pumpkin,
+                Pumpkin,
+                Pumpkin,
+                Potato,
+                Potato,
+                Potato,
+                Potato,
                 Potato,
                 Potato,
                 Sunflower,
@@ -53,11 +67,6 @@ public class MultiBotMain {
                 Sunflower,
                 Sunflower,
                 Sunflower,
-                Sunflower,
-                Sunflower,
-                Sunflower,
-                Sunflower,
-                Sunflower
         };
 
         String[] meals = {
@@ -68,9 +77,9 @@ public class MultiBotMain {
         };
 
         Map<String, Integer> mealsTarget = new HashMap<>();
-        mealsTarget.put("Mashed Potato", 100);
-        mealsTarget.put("Pumpkin Soup", 200);
-        mealsTarget.put("Bumpkin Broth", 90);
+        mealsTarget.put("Mashed Potato", 400);
+        mealsTarget.put("Pumpkin Soup", 340);
+        mealsTarget.put("Bumpkin Broth", 80);
         mealsTarget.put("Popcorn", 60);
 
         Map<Integer, String> cropsQueue = new HashMap<>();
@@ -85,17 +94,17 @@ public class MultiBotMain {
         }
 
         boolean farmCrops = true;
-        boolean cookMeal = false;
-        boolean collectResources = false;
+        boolean cookMeal = true;
+        boolean collectResources = true;
         boolean wombat = true;
 
         int currentCrop = 0;
         int currentMeal = 0;
 
-        int resourceWait = 10 * 60 + 15;
+        int resourceWait = 13 * 60 + 15;
 
         Date nextCrop = getTimePlusSecond(0);
-//        Date nextCrop = getTimePlusSecond(3 * 60 * 60 + 3 * 60);
+//        Date nextCrop = getTimePlusSecond( 2 * 60 * 60 + 30 * 60);
         Date nextResource = new Date();
 
         Date nextWombatRun = new Date();

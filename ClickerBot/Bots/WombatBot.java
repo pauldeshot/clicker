@@ -10,22 +10,17 @@ public class WombatBot {
     WombatConfig config;
     ClickerBot clickerBot;
     int runs = 0;
-
-    int lastRefreshHour;
-    int lastRefreshMinute = 23;
     private boolean helpRequested = false;
 
     public WombatBot(WombatConfig config, ClickerBot clickerBot) {
         this.config = config;
         this.clickerBot = clickerBot;
-        Date date = new Date();
-        this.lastRefreshHour = date.getHours() + 1;
     }
 
     public WombatResult run (int currentWaitingRun) {
         WombatResult result = new WombatResult();
 
-        if (currentWaitingRun >= config.waitRun || currentWaitingRun == -1) {
+        if (config.maxRuns >= runs && currentWaitingRun >= config.waitRun || currentWaitingRun == -1) {
             clickerBot.sleep(1);
             clickInTab();
             if (currentWaitingRun > 0) {
@@ -58,8 +53,8 @@ public class WombatBot {
     }
 
     public void claimTreasure () {
+        clickInTab();
         treasureClaim();
-        clickerBot.sleep(90);
     }
 
     private void treasureClaim() {
@@ -69,6 +64,7 @@ public class WombatBot {
         clickerBot.move(config.treasure[0], config.treasure[1]);
         clickerBot.clickMouse();
         clickerBot.sleep(3);
+        runs = 0;
     }
 
     private void startRun() {
