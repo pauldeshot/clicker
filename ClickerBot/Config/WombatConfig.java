@@ -24,6 +24,14 @@ public class WombatConfig {
     public int[] singTransactionButton;
     public int[] runWithoutCandy;
     public int[] dontAskAgain;
+    public int mixingRunsMode;
+    public int maxDelayBetweenRunsInSeconds;
+    public int fiveMinMaxRunsConfig;
+    public int oneHourMaxRunsConfig;
+    public int[] durationChangeButton;
+    public int[] fiveMinSelectableOption;
+    public int[] oneHourSelectableOption;
+    public int[] startRunFromChangingDurationButton;
 
     public WombatConfig() {
         String path = "wombat.json";
@@ -51,6 +59,14 @@ public class WombatConfig {
         dontAskAgain = getCoordinate(jsonObject, "dontAskAgain");
         runWithoutCandy = getCoordinate(jsonObject, "runWithoutCandy");
         singTransactionButton = getCoordinate(jsonObject, "singTransactionButton");
+        mixingRunsMode = (int) jsonObject.get("mixingRunsMode");
+        maxDelayBetweenRunsInSeconds = (int) jsonObject.get("maxDelayBetweenRunsInSeconds");
+        fiveMinMaxRunsConfig = (int) jsonObject.get("5MinMaxRunsConfig");
+        oneHourMaxRunsConfig = (int) jsonObject.get("oneHourMaxRunsConfig");
+        durationChangeButton = getCoordinate(jsonObject, "durationChangeButton");
+        fiveMinSelectableOption = getCoordinate(jsonObject, "fiveMinSelectableOption");
+        oneHourSelectableOption = getCoordinate(jsonObject, "oneHourSelectableOption");
+        startRunFromChangingDurationButton = getCoordinate(jsonObject, "startRunFromChangingDurationButton");
     }
 
     public int[] getCoordinate(JSONObject arr, String element) {

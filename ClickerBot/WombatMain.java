@@ -21,6 +21,8 @@ public class WombatMain {
         Lock lock = new ReentrantLock();
 
         int finishedRuns = 1;
+        int finished5MinRuns = 1;
+        int finished1HourRuns = 1;
         boolean tryClaimTreasure = false;
 
         while (true) {
@@ -31,11 +33,12 @@ public class WombatMain {
                         tryClaimTreasure = true;
                     }
 
-                    WombatResult result = bot.run(currentWaitingRun);
+                    WombatResult result = config.mixingRunsMode == 1 ?  ChooseBetweenMixingRuns(new Random().nextBoolean(), currentWaitingRun) : bot.run(currentWaitingRun);
+
                     clickerBot.sleep(1);
                     currentWaitingRun += result.totalWaitingTime;
 
-                    if (result.resetTime) {
+                    if (result.resetTime && config.mixingRunsMode == 0) {
                         finishedRuns++;
                         if (finishedRuns % 5 == 0) {
                             tryClaimTreasure = false;
@@ -48,6 +51,11 @@ public class WombatMain {
             } else {
                 clickerBot.sleep(1);
             }
+        }
+
+        private static WombatResult ChooseBetweenMixingRuns(boolean isFiveMinRun) {
+            
+            return isFiveMinRun ?  bot.run5MinModeRuns(currentWaitingRun) :  bot.runOneHourModeRuns(currentWaitingRun);
         }
     }
 

@@ -10,6 +10,8 @@ public class WombatBot {
     WombatConfig config;
     ClickerBot clickerBot;
     int runs = 0;
+    int fiveMinRuns = 0;
+    int oneHourRuns = 0;
     private boolean helpRequested = false;
 
     public WombatBot(WombatConfig config, ClickerBot clickerBot) {
@@ -52,6 +54,46 @@ public class WombatBot {
         return result;
     }
 
+    public WombatResult run5MinModeRuns (int currentWaitingRun) {
+        WombatResult result = new WombatResult();
+
+         if (config.fiveMinMaxRunsConfig >= fiveMinRuns && currentWaitingRun >= config.waitRun || currentWaitingRun == -1) {
+            clickerBot.sleep(new Random().nextInt(config.maxDelayBetweenRunsInSeconds));
+            clickInTab();
+            collectReward();
+            selectRunTypeAndStart(true)
+            this.helpRequested = false;
+            result.resetTime = true;
+            fiveMinRuns++;
+            System.out.println("Five minutes run: "+ fiveMinRuns + "and one hour run: " + oneHourRuns);
+        }
+
+        helpGuildTeammates(result);
+
+        result.totalWaitingTime++;
+        return result;
+    }
+
+    public WombatResult runOneHourModeRuns (int currentWaitingRun) {
+        WombatResult result = new WombatResult();
+
+         if (config.oneHourMaxRunsConfig >= oneHourRuns && currentWaitingRun >= (config.waitRun*12) || currentWaitingRun == -1) {
+            clickerBot.sleep(new Random().nextInt(config.maxDelayBetweenRunsInSeconds));
+            clickInTab();
+            collectReward();
+            selectRunTypeAndStart();
+            this.helpRequested = false;
+            result.resetTime = true;
+            oneHourRuns++;
+            System.out.println("Five minutes run: "+ fiveMinRuns + "and one hour run: " + oneHourRuns);
+        }
+
+        helpGuildTeammates(result);
+
+        result.totalWaitingTime++;
+        return result;
+    }
+
     public void claimTreasure () {
         clickInTab();
         treasureClaim();
@@ -71,22 +113,7 @@ public class WombatBot {
         clickerBot.move(config.runButton[0], config.runButton[1]);
         clickerBot.clickMouse();
         clickerBot.sleep(3);
-
-        if (config.collectCandy == 1) {
-            clickerBot.move(config.claimCandyButton[0], config.claimCandyButton[1]);
-            clickerBot.clickMouse();
-            clickerBot.sleep(3);
-            clickerBot.move(config.singTransactionButton[0], config.singTransactionButton[1]);
-            clickerBot.clickMouse();
-        } else {
-            clickerBot.move(config.dontAskAgain[0], config.dontAskAgain[1]);
-            clickerBot.clickMouse();
-            clickerBot.sleep(3);
-            clickerBot.move(config.runWithoutCandy[0], config.runWithoutCandy[1]);
-            clickerBot.clickMouse();
-        }
-
-
+        candyCollecting()
     }
 
     private void requestHelp(int waitingTime) {
@@ -111,5 +138,55 @@ public class WombatBot {
     private void clickInTab() {
         clickerBot.move(config.wombatTab[0], config.wombatTab[1]);
         clickerBot.clickMouse();
+    }
+
+    private void candyCollecting() {
+        if (config.collectCandy == 1) {
+            clickerBot.move(config.claimCandyButton[0], config.claimCandyButton[1]);
+            clickerBot.clickMouse();
+            clickerBot.sleep(3);
+            clickerBot.move(config.singTransactionButton[0], config.singTransactionButton[1]);
+            clickerBot.clickMouse();
+        } else {
+            clickerBot.move(config.dontAskAgain[0], config.dontAskAgain[1]);
+            clickerBot.clickMouse();
+            clickerBot.sleep(3);
+            clickerBot.move(config.runWithoutCandy[0], config.runWithoutCandy[1]);
+            clickerBot.clickMouse();
+        }
+    }
+
+    private void selectRunTypeAndStart(boolean isFiveMinRun) {
+        clickerBot.move(config.durationChangeButton[0], config.durationChangeButton[1]);
+        clickerBot.clickMouse();
+        clickerBot.move(isFiveMinRun ? config.fiveMinSelectableOption[0] : config.oneHourSelectableOption[0], isFiveMinRun ? config.fiveMinSelectableOption[1] : config.oneHourSelectableOption[1]);
+        clickerBot.clickMouse();
+        clickerBot.move(config.startRunFromChangingDurationButton[0], config.startRunFromChangingDurationButton[1]);
+        clickerBot.clickMouse();
+        clickerBot.sleep(3);
+        candyCollecting();
+    }
+
+    private void collectReward(int currentWaitingRun, WombatResult result) {
+        if (currentWaitingRun > 0) {
+                clickerBot.sleep(3);
+                result.totalWaitingTime += 3;
+                claim();
+                clickerBot.sleep(1);
+                result.totalWaitingTime += 1;
+                claim();
+                clickerBot.sleep(3);
+                result.totalWaitingTime += 3;
+            }
+    }
+
+    private void helpGuildTeammates(WombatResult result) {
+        if (this.config.guildMode == 1 && !this.helpRequested) {
+            clickerBot.sleep(1);
+            clickInTab();
+            this.helpRequested = true;
+            requestHelp(2);
+            result.totalWaitingTime += 10;
+        }
     }
 }
