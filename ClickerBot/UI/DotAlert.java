@@ -15,7 +15,6 @@ public class DotAlert {
             window.setSize(20, 20);
             window.setAlwaysOnTop(true);
             window.setIgnoreRepaint(true);
-            window.setBackground(new Color(0, 0, 0, 0));
             window.setVisible(true);
             window.createBufferStrategy(2);
 
@@ -30,8 +29,8 @@ public class DotAlert {
                                 g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                                 g.setColor(color);
                                 int dotSize = 20;
-                                int x = (window.getWidth() - dotSize) / 2;
-                                int y = (window.getHeight() - dotSize) / 2;
+                                int x = 0;
+                                int y = 0;
                                 g.fillOval(x, y, dotSize, dotSize);
                                 g.dispose();
                             } while (bufferStrategy.contentsRestored());

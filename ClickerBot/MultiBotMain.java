@@ -24,11 +24,10 @@ public class MultiBotMain {
         dotAlert = new DotAlert();
         dotAlert.yellow();
 
-        System.out.println("----- Sunflower Land Clicker ------");
-        System.out.println("----- Wombat Clicker ------");
+        System.out.println("----- SFL && Wombat Clicker ------");
 
         clickerBot = new ClickerBot();
-        System.out.println("Program uruchomi się za 2 sekundy.");
+        System.out.println("Program starts in 2 seconds.");
         clickerBot.sleepM(2000);
 
         SunflowerLandConfig config = new SunflowerLandConfig();
@@ -83,7 +82,7 @@ public class MultiBotMain {
         mealsFirePitTarget.put("Mashed Potato", 400);
         mealsFirePitTarget.put("Pumpkin Soup", 150);
         mealsFirePitTarget.put("Bumpkin Broth", 80);
-        mealsFirePitTarget.put("Popcorn", 30);
+        mealsFirePitTarget.put("Popcorn", 15);
 
         Map<String, Integer> mealsFruitTarget = new HashMap<>();
         mealsFruitTarget.put(PurpleSmoothie, 20);
@@ -105,9 +104,9 @@ public class MultiBotMain {
         }
 
         boolean farmCrops = false;
-        boolean cookFirePitMeal = false;
+        boolean cookFirePitMeal = true;
         boolean cookFruitMeal = false;
-        boolean collectResources = false;
+        boolean collectResources = true;
         boolean wombat = true;
 
         int currentCrop = 0;
