@@ -45,14 +45,6 @@ public class DotAlert {
 
     }
 
-    public void hide() {
-        window.setVisible(false);
-    }
-
-    public void show() {
-        window.setVisible(true);
-    }
-
     public void red() {
         this.color = new Color(255, 0, 0, 255);
     }

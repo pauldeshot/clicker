@@ -40,7 +40,6 @@ public class WombatBot {
             this.helpRequested = false;
             result.resetTime = true;
             runs++;
-            System.out.println("Run: "+ runs);
         }
 
         if (this.config.guildMode == 1 && !this.helpRequested) {

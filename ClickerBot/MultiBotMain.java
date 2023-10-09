@@ -6,6 +6,9 @@ import ClickerBot.Bots.WombatBot;
 import ClickerBot.Config.SunflowerLandConfig;
 import ClickerBot.Config.WombatConfig;
 import ClickerBot.DTO.FarmData;
+import ClickerBot.Enums.Crops;
+import ClickerBot.Enums.FirePitMeals;
+import ClickerBot.Enums.FruitDrinks;
 import ClickerBot.UI.DotAlert;
 
 import java.util.Calendar;
@@ -36,86 +39,42 @@ public class MultiBotMain {
         WombatConfig wombatConfig = new WombatConfig();
         WombatBot wombatBot = new WombatBot(wombatConfig, clickerBot);
 
-        String PurpleSmoothie = "Purple Smoothie";
-
-        Map<String, Integer> mealsFirePitCount = new HashMap<>();
-        mealsFirePitCount.put("Mashed Potato", 0);
-        mealsFirePitCount.put("Pumpkin Soup", 0);
-        mealsFirePitCount.put("Bumpkin Broth", 0);
-        mealsFirePitCount.put("Popcorn", 0);
-
-        Map<String, Integer> mealsFruitCount = new HashMap<>();
-        mealsFruitCount.put(PurpleSmoothie, 0);
-
-        String Corn = "Corn";
-        String Eggplant = "Eggplant";
-        String Cauliflower = "Cauliflower";
-        String Parsnip = "Parsnip";
-        String Beetroot = "Beetroot";
-        String Cabbage = "Cabbage";
-        String Carrot = "Carrot";
-        String Pumpkin = "Pumpkin";
-        String Potato = "Potato";
-        String Sunflower = "Sunflower";
+        Map<String, Integer> mealsFirePitCount = FirePitMeals.getList();
+        Map<String, Integer> mealsFruitCount = FruitDrinks.getList();
 
         String[] crops = {
-            Cauliflower,
-                Cabbage,
-                Cabbage,
-                Carrot,
-                Carrot,
-                Carrot,
+            Crops.Sunflower,
         };
 
-        String[] mealsFirePit = {
-//                "Mashed Potato",
-//                "Pumpkin Soup",
-//                "Bumpkin Broth",
-                "Popcorn"
-        };
+        String[] mealsFirePit = {FirePitMeals.Popcorn};
+        String[] mealsFruit = {FruitDrinks.PurpleSmoothie};
 
-        String[] mealsFruit = {
-                PurpleSmoothie
-        };
+        boolean farmCrops = true;
+        boolean cookFirePitMeal = false;
+        boolean cookFruitMeal = false;
+        boolean collectResources = false;
+        boolean wombat = false;
+
+        int delayCrops = 0;
+//        int delayCrops = 8 * 60 * 60 + 40 * 60;
 
         Map<String, Integer> mealsFirePitTarget = new HashMap<>();
-        mealsFirePitTarget.put("Mashed Potato", 400);
-        mealsFirePitTarget.put("Pumpkin Soup", 150);
-        mealsFirePitTarget.put("Bumpkin Broth", 80);
-        mealsFirePitTarget.put("Popcorn", 15);
+        mealsFirePitTarget.put(FirePitMeals.Popcorn, 15);
 
         Map<String, Integer> mealsFruitTarget = new HashMap<>();
-        mealsFruitTarget.put(PurpleSmoothie, 20);
+        mealsFruitTarget.put(FruitDrinks.PurpleSmoothie, 20);
 
-        Map<Integer, String> cropsQueue = new HashMap<>();
-        Map<Integer, String> mealsFirePitQueue = new HashMap<>();
-        Map<Integer, String> mealsFruitQueue = new HashMap<>();
 
-        for (int i = 0; i < crops.length; i++) {
-            cropsQueue.put(i, crops[i]);
-        }
-
-        for (int i = 0; i < mealsFirePit.length; i++) {
-            mealsFirePitQueue.put(i, mealsFirePit[i]);
-        }
-
-        for (int i = 0; i < mealsFruit.length; i++) {
-            mealsFruitQueue.put(i, mealsFruit[i]);
-        }
-
-        boolean farmCrops = false;
-        boolean cookFirePitMeal = true;
-        boolean cookFruitMeal = false;
-        boolean collectResources = true;
-        boolean wombat = true;
+        Map<Integer, String> cropsQueue = getQueue(crops);
+        Map<Integer, String> mealsFirePitQueue = getQueue(mealsFirePit);
+        Map<Integer, String> mealsFruitQueue = getQueue(mealsFruit);
 
         int currentCrop = 0;
         int currentMealFirePit = 0;
         int currentMealFruit = 0;
         int resourceWait = 13 * 60 + 15;
 
-        Date nextCrop = getTimePlusSecond(0);
-//        Date nextCrop = getTimePlusSecond( 8 * 60 * 60 + 40 * 60);
+        Date nextCrop = getTimePlusSecond(delayCrops);
         Date nextResource = new Date();
         Date nextWombatRun = new Date();
         Date nextFirePitMeal = new Date();
@@ -127,7 +86,6 @@ public class MultiBotMain {
 
         while (true) {
             Date currentDate = new Date();
-
             // alert
             if (
                 shouldBeAlert(nextCrop, farmCrops) ||
@@ -136,8 +94,9 @@ public class MultiBotMain {
                 shouldBeAlert(nextResource, collectResources) ||
                 shouldBeAlert(nextWombatRun, wombat)
             ) {
-                System.out.println("Test yellow");
                 dotAlert.yellow();
+            } else {
+                dotAlert.green();
             }
 
             if (farmCrops && cropsQueue.containsKey(currentCrop) && currentDate.compareTo(nextCrop) >= 0) {
@@ -156,7 +115,7 @@ public class MultiBotMain {
                 bot.clickInTab();
                 bot.resources();
                 nextResource = getTimePlusSecond(resourceWait);
-                System.out.println("Next tree: " + nextResource.toString());
+                System.out.println("Next resources: " + nextResource.toString());
             }
 
             if (cookFirePitMeal &&
@@ -197,14 +156,12 @@ public class MultiBotMain {
 
             if (wombat) {
                 if (!tryClaimTreasure) {
-                    System.out.println("Treasure");
                     dotAlert.red();
                     wombatBot.claimTreasure();
                     tryClaimTreasure = true;
                 }
 
                 if (currentDate.compareTo(nextWombatRun) >= 0) {
-                    System.out.println("Run");
                     dotAlert.red();
                     wombatBot.run(60 * 60 * 24);
                     nextWombatRun = getTimePlusSecond(waitWombat);
@@ -217,9 +174,16 @@ public class MultiBotMain {
                 }
             }
 
-            dotAlert.green();
             clickerBot.sleep(1);
         }
+    }
+
+    public static Map<Integer, String> getQueue(String[] queue) {
+        Map<Integer, String> queueList = new HashMap<>();
+        for (int i = 0; i < queue.length; i++) {
+            queueList.put(i, queue[i]);
+        }
+        return queueList;
     }
 
     public static boolean shouldBeAlert(Date nextDate, boolean globalConfigSwitch) {
