@@ -64,8 +64,10 @@
       [830,285],
       [831,285],
 
-      [831,322],
-
+      [754,328],
+      [792,328],
+      [830,328],
+      [831,328],
 
       [892,574],
       [964,574],
@@ -106,9 +108,11 @@
     "beetroot": [727,370],
     "cauliflower": [775,370],
     "parsnip": [831,370],
-    "eggplant": [888,370]
+    "eggplant": [888,370],
+    "corn": [454,426]
   },
   "firePit": [421,448],
+  "smoothieShack": [417,347],
   "meals": {
     "mashedPotato": [584,378],
     "mashedPotatoCookButton": [896,577],
@@ -117,7 +121,9 @@
     "bumpkinBroth": [694,370],
     "bumpkinBrothCookButton": [902,604],
     "popcorn": [694,370],
-    "popcornButton": [902,604]
+    "popcornButton": [902,604],
+    "purpleSmoothie": [694,471],
+    "purpleSmoothieButton": [892,590]
   },
   "potionHouse": {
     "startGameButton": [868,637],
