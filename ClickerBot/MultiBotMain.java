@@ -6,6 +6,7 @@ import ClickerBot.Bots.WombatBot;
 import ClickerBot.Config.SunflowerLandConfig;
 import ClickerBot.Config.WombatConfig;
 import ClickerBot.DTO.FarmData;
+import ClickerBot.UI.DotAlert;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -17,7 +18,12 @@ public class MultiBotMain {
     private static boolean tryClaimTreasure = false;
     private static int finishedRuns = 0;
 
+    private static DotAlert dotAlert;
+
     public static void main(String[] args) {
+        dotAlert = new DotAlert();
+        dotAlert.yellow();
+
         System.out.println("----- Sunflower Land Clicker ------");
         System.out.println("----- Wombat Clicker ------");
 
@@ -101,7 +107,7 @@ public class MultiBotMain {
         boolean farmCrops = false;
         boolean cookFirePitMeal = false;
         boolean cookFruitMeal = false;
-        boolean collectResources = true;
+        boolean collectResources = false;
         boolean wombat = true;
 
         int currentCrop = 0;
@@ -119,10 +125,24 @@ public class MultiBotMain {
         int waitWombat = 5 * 60;
         boolean firstFirePitMeal = true;
         boolean firstFruitMeal = true;
+
         while (true) {
             Date currentDate = new Date();
 
+            // alert
+            if (
+                shouldBeAlert(nextCrop, farmCrops) ||
+                shouldBeAlert(nextFirePitMeal, cookFirePitMeal) ||
+                shouldBeAlert(nextFruitMeal, cookFruitMeal) ||
+                shouldBeAlert(nextResource, collectResources) ||
+                shouldBeAlert(nextWombatRun, wombat)
+            ) {
+                System.out.println("Test yellow");
+                dotAlert.yellow();
+            }
+
             if (farmCrops && cropsQueue.containsKey(currentCrop) && currentDate.compareTo(nextCrop) >= 0) {
+                dotAlert.red();
                 bot.clickInTab();
                 FarmData farmData = bot.checkFarm();
                 bot.inventory(cropsQueue.get(currentCrop));
@@ -133,6 +153,7 @@ public class MultiBotMain {
             }
 
             if (collectResources && currentDate.compareTo(nextResource) >= 0) {
+                dotAlert.red();
                 bot.clickInTab();
                 bot.resources();
                 nextResource = getTimePlusSecond(resourceWait);
@@ -142,7 +163,7 @@ public class MultiBotMain {
             if (cookFirePitMeal &&
                     mealsFirePitQueue.containsKey(currentMealFirePit) &&
                     currentDate.compareTo(nextFirePitMeal) >= 0) {
-
+                dotAlert.red();
                 if (mealsFirePitQueue.containsKey(currentMealFirePit) &&
                         mealsFirePitCount.get(mealsFirePitQueue.get(currentMealFirePit)) >= mealsFirePitTarget.get(mealsFirePitQueue.get(currentMealFirePit))) {
                     currentMealFirePit++;
@@ -160,7 +181,7 @@ public class MultiBotMain {
             if (cookFruitMeal &&
                     mealsFruitQueue.containsKey(currentMealFruit) &&
                     currentDate.compareTo(nextFruitMeal) >= 0) {
-
+                dotAlert.red();
                 if (mealsFruitQueue.containsKey(currentMealFruit) &&
                         mealsFruitCount.get(mealsFruitQueue.get(currentMealFruit)) >= mealsFruitTarget.get(mealsFruitQueue.get(currentMealFruit))) {
                     currentMealFruit++;
@@ -177,11 +198,15 @@ public class MultiBotMain {
 
             if (wombat) {
                 if (!tryClaimTreasure) {
+                    System.out.println("Treasure");
+                    dotAlert.red();
                     wombatBot.claimTreasure();
                     tryClaimTreasure = true;
                 }
 
                 if (currentDate.compareTo(nextWombatRun) >= 0) {
+                    System.out.println("Run");
+                    dotAlert.red();
                     wombatBot.run(60 * 60 * 24);
                     nextWombatRun = getTimePlusSecond(waitWombat);
                     System.out.println("Next wombat: " + nextWombatRun.toString());
@@ -193,8 +218,14 @@ public class MultiBotMain {
                 }
             }
 
+            dotAlert.green();
             clickerBot.sleep(1);
         }
+    }
+
+    public static boolean shouldBeAlert(Date nextDate, boolean globalConfigSwitch) {
+        Date currentDate = new Date();
+        return ((nextDate.getTime() - currentDate.getTime()) / 1000) < 10 && globalConfigSwitch;
     }
 
     private static Date getTimePlusSecond(int seconds) {
