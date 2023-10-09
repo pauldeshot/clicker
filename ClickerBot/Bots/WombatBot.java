@@ -4,6 +4,7 @@ import ClickerBot.Config.WombatConfig;
 import ClickerBot.DTO.WombatResult;
 
 import java.util.Date;
+import java.util.Random;
 
 public class WombatBot {
 
@@ -33,6 +34,8 @@ public class WombatBot {
                 clickerBot.sleep(3);
                 result.totalWaitingTime += 3;
             }
+            Random rand = new Random();
+            clickerBot.sleep(rand.nextInt(5));
             startRun();
             this.helpRequested = false;
             result.resetTime = true;

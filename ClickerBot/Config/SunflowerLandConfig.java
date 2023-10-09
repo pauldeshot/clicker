@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class SunflowerLandConfig {
 
+
+
     public SunflowerLandConfig() {
         setTimes();
         String path = "config.json";
@@ -88,6 +90,7 @@ public class SunflowerLandConfig {
         corn_seed = getCoordinate(seeds, "corn");
 
         firePit = getCoordinate(jsonObject, "firePit");
+        smoothieShack = getCoordinate(jsonObject, "smoothieShack");
 
         JSONObject meals = jsonObject.getJSONObject("meals");
         mashedPotato = getCoordinate(meals, "mashedPotato");
@@ -98,6 +101,8 @@ public class SunflowerLandConfig {
         bumpkinBrothCookButton = getCoordinate(meals, "bumpkinBrothCookButton");
         popcorn = getCoordinate(meals, "popcorn");
         popcornButton = getCoordinate(meals, "popcornButton");
+        purpleSmoothie = getCoordinate(meals, "purpleSmoothie");
+        purpleSmoothieButton = getCoordinate(meals, "purpleSmoothieButton");
     }
 
     public int[] getCoordinate(JSONObject arr, String element) {
@@ -121,9 +126,10 @@ public class SunflowerLandConfig {
         mealsTimes.put("Pumpkin Soup", 2 * 60 + 42);
         mealsTimes.put("Bumpkin Broth", 18 * 60);
         mealsTimes.put("Popcorn", 10 * 60 + 49);
+        mealsTimes.put("Purple Smoothie", 27 * 60);
 
 
-        cropsTimes.put("Sunflower", 38);
+        cropsTimes.put("Sunflower", 41);
         cropsTimes.put("Potato", 3 * 60 + 11);
         cropsTimes.put("Pumpkin", 19 * 60 + 11);
         cropsTimes.put("Carrot", 38 * 60 + 22);
@@ -152,6 +158,7 @@ public class SunflowerLandConfig {
     public int[] eggplant_seed;
     public int[] corn_seed;
     public int[] firePit;
+    public int[] smoothieShack;
     public int[] mashedPotato;
     public int[] mashedPotatoCookButton;
     public int[] pumpkinSoup;
@@ -160,6 +167,8 @@ public class SunflowerLandConfig {
     public int[] bumpkinBrothCookButton;
     public int[] popcorn;
     public int[] popcornButton;
+    public int[] purpleSmoothie;
+    public int[] purpleSmoothieButton;
 
     public Map<String, Integer> cropsTimes;
     public Map<String, Integer> mealsTimes;

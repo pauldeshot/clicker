@@ -63,6 +63,13 @@ public class SunflowerLandBot {
         clickerBot.click(InputEvent.BUTTON1_DOWN_MASK);
     }
 
+    private void clickSmoothieShack() {
+        Random rand = new Random();
+        int randOffset = 3;
+        clickerBot.move(config.smoothieShack[0] + rand.nextInt(randOffset), config.smoothieShack[1] + rand.nextInt(randOffset));
+        clickerBot.click(InputEvent.BUTTON1_DOWN_MASK);
+    }
+
     private void moveAndClick(int x, int y) {
         Random rand = new Random();
         int randOffset = 3;
@@ -74,41 +81,32 @@ public class SunflowerLandBot {
         Random rand = new Random();
         int randOffset = 3;
 
-        int mealX = config.mashedPotato[0] + rand.nextInt(randOffset);
-        int mealY = config.mashedPotato[1] + rand.nextInt(randOffset);
         int cookButtonX = config.mashedPotatoCookButton[0] + rand.nextInt(randOffset);
         int cookButtonY = config.mashedPotatoCookButton[1] + rand.nextInt(randOffset);
 
         if (meal.equals("Pumpkin Soup")) {
-            mealX = config.pumpkinSoup[0] + rand.nextInt(randOffset);
-            mealY = config.pumpkinSoup[1] + rand.nextInt(randOffset);
             cookButtonX = config.pumpkinSoupCookButton[0] + rand.nextInt(randOffset);
             cookButtonY = config.pumpkinSoupCookButton[1] + rand.nextInt(randOffset);
         }
 
         if (meal.equals("Bumpkin Broth")) {
-            mealX = config.bumpkinBroth[0] + rand.nextInt(randOffset);
-            mealY = config.bumpkinBroth[1] + rand.nextInt(randOffset);
             cookButtonX = config.bumpkinBrothCookButton[0] + rand.nextInt(randOffset);
             cookButtonY = config.bumpkinBrothCookButton[1] + rand.nextInt(randOffset);
         }
 
         if (meal.equals("Popcorn")) {
-            mealX = config.popcorn[0] + rand.nextInt(randOffset);
-            mealY = config.popcorn[1] + rand.nextInt(randOffset);
             cookButtonX = config.popcornButton[0] + rand.nextInt(randOffset);
             cookButtonY = config.popcornButton[1] + rand.nextInt(randOffset);
         }
 
-//        clickerBot.sleepM(300);
-//        clickerBot.move(mealX, mealY);
-//        clickerBot.clickMouse();
-//        System.out.println("das");
+        if (meal.equals("Purple Smoothie")) {
+            cookButtonX = config.purpleSmoothieButton[0] + rand.nextInt(randOffset);
+            cookButtonY = config.purpleSmoothieButton[1] + rand.nextInt(randOffset);
+        }
 
         clickerBot.sleepM(300);
         clickerBot.move(cookButtonX, cookButtonY);
         clickerBot.clickMouse();
-        System.out.println("das 12 31");
     }
 
     public String inventory(String item) {
@@ -323,13 +321,24 @@ public class SunflowerLandBot {
         return farmData;
     }
 
-    public void collectMeal(String meal, boolean firstMeal) {
+    public void collectMealFirePit(String meal, boolean firstMeal) {
         if (!firstMeal) {
             clickerBot.sleepM(500);
             clickFirePit();
         }
         clickerBot.sleepM(500);
         clickFirePit();
+        clickerBot.sleepM(500);
+        clickMeal(meal);
+    }
+
+    public void collectMealFruit(String meal, boolean firstMeal) {
+        if (!firstMeal) {
+            clickerBot.sleepM(500);
+            clickSmoothieShack();
+        }
+        clickerBot.sleepM(500);
+        clickSmoothieShack();
         clickerBot.sleepM(500);
         clickMeal(meal);
     }
