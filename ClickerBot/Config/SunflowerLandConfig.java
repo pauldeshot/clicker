@@ -12,10 +12,7 @@ import java.util.Map;
 
 public class SunflowerLandConfig {
 
-
-
     public SunflowerLandConfig() {
-        setTimes();
         String path = "config.json";
         String content = null;
         try {
@@ -27,9 +24,25 @@ public class SunflowerLandConfig {
 
         farmId = (int) jsonObject.get("farmId");
 
+        cropsTimes = new HashMap<>();
+        cropsTimes.put("Sunflower", (int) jsonObject.get("SunflowerTime"));
+        cropsTimes.put("Potato", (int) jsonObject.get("PotatoTime"));
+        cropsTimes.put("Pumpkin", (int) jsonObject.get("PumpkinTime"));
+        cropsTimes.put("Carrot", (int) jsonObject.get("CarrotTime"));
+        cropsTimes.put("Cabbage", (int) jsonObject.get("CabbageTime"));
+        cropsTimes.put("Beetroot", (int) jsonObject.get("BeetrootTime"));
+        cropsTimes.put("Cauliflower", (int) jsonObject.get("CauliflowerTime"));
+        cropsTimes.put("Parsnip", (int) jsonObject.get("ParsnipTime"));
+        cropsTimes.put("Eggplant", (int) jsonObject.get("EggplantTime"));
+        cropsTimes.put("Corn", (int) jsonObject.get("CornTime"));
+        cropsTimes.put("Radish", (int) jsonObject.get("RadishTime"));
+        cropsTimes.put("Wheat", (int) jsonObject.get("WheatTime"));
+        cropsTimes.put("Kale", (int) jsonObject.get("KaleTime"));
+
         sunflowerLandTab = getCoordinate(jsonObject, "sunflowerLandTab");
         blank = getCoordinate(jsonObject, "blank");
         inventory = getCoordinate(jsonObject, "inventory");
+        saveButton = getCoordinate(jsonObject, "saveButton");
 
         //potion house
         JSONObject potionHouse = jsonObject.getJSONObject("potionHouse");
@@ -103,6 +116,14 @@ public class SunflowerLandConfig {
         popcornButton = getCoordinate(meals, "popcornButton");
         purpleSmoothie = getCoordinate(meals, "purpleSmoothie");
         purpleSmoothieButton = getCoordinate(meals, "purpleSmoothieButton");
+
+        mealsTimes = new HashMap<>();
+        mealsTimes.put("Mashed Potato", (int) meals.get("mashedPotatoTime"));
+        mealsTimes.put("Pumpkin Soup", (int) meals.get("pumpkinSoupTime"));
+        mealsTimes.put("Bumpkin Broth", (int) meals.get("bumpkinBrothTime"));
+        mealsTimes.put("Popcorn", (int) meals.get("popcornTime"));
+        mealsTimes.put("Purple Smoothie", (int) meals.get("purpleSmoothieTime"));
+
     }
 
     public int[] getCoordinate(JSONObject arr, String element) {
@@ -117,32 +138,6 @@ public class SunflowerLandConfig {
     public int farmId;
 
     public int[] sunflowerLandTab;
-
-    private void setTimes() {
-        cropsTimes = new HashMap<>();
-        mealsTimes = new HashMap<>();
-
-        mealsTimes.put("Mashed Potato", 54);
-        mealsTimes.put("Pumpkin Soup", 2 * 60 + 42);
-        mealsTimes.put("Bumpkin Broth", 18 * 60);
-        mealsTimes.put("Popcorn", 10 * 60 + 49);
-        mealsTimes.put("Purple Smoothie", 27 * 60);
-
-
-        cropsTimes.put("Sunflower", 41);
-        cropsTimes.put("Potato", 3 * 60 + 11);
-        cropsTimes.put("Pumpkin", 19 * 60 + 11);
-        cropsTimes.put("Carrot", 38 * 60 + 22);
-        cropsTimes.put("Cabbage", 60 * 60 + 17 * 60);
-        cropsTimes.put("Beetroot", 2 * 60 * 60 + 33 * 60);
-        cropsTimes.put("Cauliflower", 5 * 60 * 60 + 6 * 60);
-        cropsTimes.put("Parsnip", 7 * 60 * 60 + 40 * 60);
-        cropsTimes.put("Eggplant", 7 * 60 * 60 + 40 * 60);
-        cropsTimes.put("Corn", 9 * 60 * 60 + 35 * 60);
-        cropsTimes.put("Radish", 15 * 60 * 60 + 20 * 60);
-        cropsTimes.put("Wheat", 15 * 60 * 60 + 20 * 60);
-        cropsTimes.put("Kale", 23 * 60 * 60 + 60);
-    }
 
     public int[][] resources;
     public int[] blank;
@@ -186,4 +181,5 @@ public class SunflowerLandConfig {
     public int[] potion5;
     public int[] potion6;
     public int[] potion7;
+    public int[] saveButton;
 }
