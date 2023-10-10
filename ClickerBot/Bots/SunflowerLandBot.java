@@ -40,6 +40,12 @@ public class SunflowerLandBot {
         }
     }
 
+    public void save() {
+        clickerBot.sleepM(300);
+        moveAndClick(config.saveButton[0], config.saveButton[1]);
+        clickerBot.sleepM(300);
+    }
+
     public void resources() {
         for (int[] resource : config.resources) {
             moveAndClick(resource[0], resource[1]);
@@ -107,6 +113,10 @@ public class SunflowerLandBot {
         clickerBot.sleepM(300);
         clickerBot.move(cookButtonX, cookButtonY);
         clickerBot.clickMouse();
+
+        clickerBot.sleepM(300);
+        clickerBot.move(config.blank[0], config.blank[1]);
+        clickerBot.clickMouse();
     }
 
     public String inventory(String item) {
@@ -156,6 +166,11 @@ public class SunflowerLandBot {
 
         if (item.equals("Eggplant")) {
             clickerBot.move(config.eggplant_seed[0], config.eggplant_seed[1]);
+            clickerBot.clickMouse();
+        }
+
+        if (item.equals("Corn")) {
+            clickerBot.move(config.corn_seed[0], config.corn_seed[1]);
             clickerBot.clickMouse();
         }
 
@@ -332,7 +347,7 @@ public class SunflowerLandBot {
         clickMeal(meal);
     }
 
-    public void collectMealFruit(String meal, boolean firstMeal) {
+    public void collectSmootieShack(String meal, boolean firstMeal) {
         if (!firstMeal) {
             clickerBot.sleepM(500);
             clickSmoothieShack();

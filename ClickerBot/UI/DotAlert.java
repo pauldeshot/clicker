@@ -7,12 +7,17 @@ import java.awt.image.BufferStrategy;
 public class DotAlert {
     public Color color;
     public JWindow window;
+
+    public int x = 0;
+
+    public int y = 0;
+    public int dotSize = 20;
     public DotAlert() {
         this.color = new Color(255, 0, 0, 255);
 
         SwingUtilities.invokeLater(() -> {
             window = new JWindow();
-            window.setSize(20, 20);
+            window.setSize(45, 700);
             window.setAlwaysOnTop(true);
             window.setIgnoreRepaint(true);
             window.setVisible(true);
@@ -26,13 +31,8 @@ public class DotAlert {
                         do {
                             do {
                                 Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-                                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                                 g.setColor(color);
-                                int dotSize = 20;
-                                int x = 0;
-                                int y = 0;
-                                g.fillOval(x, y, dotSize, dotSize);
-                                g.dispose();
+                                g.fillRect(0, 0, 45, 700);
                             } while (bufferStrategy.contentsRestored());
                             bufferStrategy.show();
                         } while (bufferStrategy.contentsLost());
@@ -47,13 +47,17 @@ public class DotAlert {
 
     public void red() {
         this.color = new Color(255, 0, 0, 255);
+        this.dotSize = 20;
+
     }
 
     public void green() {
         this.color = new Color(0, 255, 0, 255);
+        this.dotSize = 20;
     }
 
     public void yellow() {
         this.color = new Color(255, 255, 0, 255);
+        this.dotSize = 150;
     }
 }

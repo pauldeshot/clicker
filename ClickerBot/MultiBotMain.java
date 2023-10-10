@@ -24,12 +24,12 @@ public class MultiBotMain {
     private static DotAlert dotAlert;
 
     public static void main(String[] args) {
+        System.out.println("----- SFL && Wombat Clicker ------");
+        clickerBot = new ClickerBot();
+
         dotAlert = new DotAlert();
         dotAlert.yellow();
 
-        System.out.println("----- SFL && Wombat Clicker ------");
-
-        clickerBot = new ClickerBot();
         System.out.println("Program starts in 2 seconds.");
         clickerBot.sleepM(2000);
 
@@ -39,50 +39,43 @@ public class MultiBotMain {
         WombatConfig wombatConfig = new WombatConfig();
         WombatBot wombatBot = new WombatBot(wombatConfig, clickerBot);
 
-        Map<String, Integer> mealsFirePitCount = FirePitMeals.getList();
-        Map<String, Integer> mealsFruitCount = FruitDrinks.getList();
+        int mealsFirePitCount = 0;
+        int mealsSmoothieShackCount = 0;
 
         String[] crops = {
             Crops.Sunflower,
+            Crops.Sunflower,
         };
 
-        String[] mealsFirePit = {FirePitMeals.Popcorn};
-        String[] mealsFruit = {FruitDrinks.PurpleSmoothie};
+        String mealFirePit = FirePitMeals.Popcorn;
+        String mealSmoothieShack = FruitDrinks.PurpleSmoothie;
 
         boolean farmCrops = true;
         boolean cookFirePitMeal = false;
-        boolean cookFruitMeal = false;
+        boolean cookSmoothieShackMeal = false;
         boolean collectResources = false;
         boolean wombat = false;
 
         int delayCrops = 0;
 //        int delayCrops = 8 * 60 * 60 + 40 * 60;
 
-        Map<String, Integer> mealsFirePitTarget = new HashMap<>();
-        mealsFirePitTarget.put(FirePitMeals.Popcorn, 15);
-
-        Map<String, Integer> mealsFruitTarget = new HashMap<>();
-        mealsFruitTarget.put(FruitDrinks.PurpleSmoothie, 20);
-
+        int mealsFirePitTarget = 2;
+        int mealsSmoothieShackTarget = 20;
 
         Map<Integer, String> cropsQueue = getQueue(crops);
-        Map<Integer, String> mealsFirePitQueue = getQueue(mealsFirePit);
-        Map<Integer, String> mealsFruitQueue = getQueue(mealsFruit);
 
         int currentCrop = 0;
-        int currentMealFirePit = 0;
-        int currentMealFruit = 0;
         int resourceWait = 13 * 60 + 15;
 
         Date nextCrop = getTimePlusSecond(delayCrops);
         Date nextResource = new Date();
         Date nextWombatRun = new Date();
         Date nextFirePitMeal = new Date();
-        Date nextFruitMeal = new Date();
+        Date nextSmoothieShackMeal = new Date();
 
-        int waitWombat = 5 * 60;
+        int waitWombat = 4 * 60 + 50;
         boolean firstFirePitMeal = true;
-        boolean firstFruitMeal = true;
+        boolean firstSmoothieShackMeal = true;
 
         while (true) {
             Date currentDate = new Date();
@@ -90,7 +83,7 @@ public class MultiBotMain {
             if (
                 shouldBeAlert(nextCrop, farmCrops) ||
                 shouldBeAlert(nextFirePitMeal, cookFirePitMeal) ||
-                shouldBeAlert(nextFruitMeal, cookFruitMeal) ||
+                shouldBeAlert(nextSmoothieShackMeal, cookSmoothieShackMeal) ||
                 shouldBeAlert(nextResource, collectResources) ||
                 shouldBeAlert(nextWombatRun, wombat)
             ) {
@@ -106,6 +99,7 @@ public class MultiBotMain {
                 bot.inventory(cropsQueue.get(currentCrop));
                 nextCrop = getTimePlusSecond(config.cropsTimes.get(cropsQueue.get(currentCrop)) + 5);
                 bot.crops(farmData, true);
+                bot.save();
                 currentCrop++;
                 System.out.println("Next crops: " + nextCrop.toString());
             }
@@ -118,39 +112,31 @@ public class MultiBotMain {
                 System.out.println("Next resources: " + nextResource.toString());
             }
 
-            if (cookFirePitMeal &&
-                    mealsFirePitQueue.containsKey(currentMealFirePit) &&
-                    currentDate.compareTo(nextFirePitMeal) >= 0) {
+            if (cookFirePitMeal && currentDate.compareTo(nextFirePitMeal) >= 0) {
                 dotAlert.red();
-                if (mealsFirePitQueue.containsKey(currentMealFirePit) &&
-                        mealsFirePitCount.get(mealsFirePitQueue.get(currentMealFirePit)) >= mealsFirePitTarget.get(mealsFirePitQueue.get(currentMealFirePit))) {
-                    currentMealFirePit++;
-                    nextFirePitMeal = new Date();
+                bot.clickInTab();
+                bot.collectMealFirePit(mealFirePit, firstFirePitMeal);
+                mealsFirePitCount++;
+                firstFirePitMeal = false;
+                if (mealsFirePitCount >= mealsFirePitTarget) {
+                    cookFirePitMeal = false;
                 } else {
-                    bot.clickInTab();
-                    bot.collectMealFirePit(mealsFirePitQueue.get(currentMealFirePit), firstFirePitMeal);
-                    mealsFirePitCount.put(mealsFirePitQueue.get(currentMealFirePit), mealsFirePitCount.get(mealsFirePitQueue.get(currentMealFirePit)) + 1);
-                    firstFirePitMeal = false;
-                    nextFirePitMeal = getTimePlusSecond(config.mealsTimes.get(mealsFirePitQueue.get(currentMealFirePit)) + 2);
-                    System.out.println("Next meal fire pit: " + nextFirePitMeal.toString());
+                    nextFirePitMeal = getTimePlusSecond(config.mealsTimes.get(mealFirePit) + 2);
+                    System.out.println("Next Fire Pit meal: " + nextFirePitMeal.toString());
                 }
             }
 
-            if (cookFruitMeal &&
-                    mealsFruitQueue.containsKey(currentMealFruit) &&
-                    currentDate.compareTo(nextFruitMeal) >= 0) {
+            if (cookSmoothieShackMeal && currentDate.compareTo(nextSmoothieShackMeal) >= 0) {
                 dotAlert.red();
-                if (mealsFruitQueue.containsKey(currentMealFruit) &&
-                        mealsFruitCount.get(mealsFruitQueue.get(currentMealFruit)) >= mealsFruitTarget.get(mealsFruitQueue.get(currentMealFruit))) {
-                    currentMealFruit++;
-                    nextFruitMeal = new Date();
+                bot.clickInTab();
+                bot.collectSmootieShack(mealSmoothieShack, firstSmoothieShackMeal);
+                mealsSmoothieShackCount++;
+                firstSmoothieShackMeal = false;
+                if (mealsSmoothieShackCount >= mealsSmoothieShackTarget) {
+                    cookSmoothieShackMeal = false;
                 } else {
-                    bot.clickInTab();
-                    bot.collectMealFruit(mealsFruitQueue.get(currentMealFruit), firstFruitMeal);
-                    mealsFruitCount.put(mealsFruitQueue.get(currentMealFruit), mealsFruitCount.get(mealsFruitQueue.get(currentMealFruit)) + 1);
-                    firstFruitMeal = false;
-                    nextFruitMeal = getTimePlusSecond(config.mealsTimes.get(mealsFruitQueue.get(currentMealFruit)) + 2);
-                    System.out.println("Next meal fruit: " + nextFruitMeal.toString());
+                    nextSmoothieShackMeal = getTimePlusSecond(config.mealsTimes.get(mealSmoothieShack) + 2);
+                    System.out.println("Next Smoothie Shack meal: " + nextSmoothieShackMeal.toString());
                 }
             }
 
