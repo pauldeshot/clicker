@@ -17,11 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MultiBotMain {
-
-    private static boolean tryClaimTreasure = false;
-    private static int finishedRuns = 0;
-
     private static DotAlert dotAlert;
+    private static int wombatRuns = 0;
 
     public static void main(String[] args) {
         System.out.println("----- SFL && Wombat Clicker ------");
@@ -72,6 +69,8 @@ public class MultiBotMain {
         Date nextWombatRun = new Date();
         Date nextFirePitMeal = new Date();
         Date nextSmoothieShackMeal = new Date();
+        Date nextTreasure = getNextTreasureTime();
+
 
         int waitWombat = 4 * 60 + 50;
         boolean firstFirePitMeal = true;
@@ -152,27 +151,41 @@ public class MultiBotMain {
             }
 
             if (wombat) {
-                if (!tryClaimTreasure) {
+                if (currentDate.compareTo(nextTreasure) >= 0) {
                     dotAlert.red();
                     wombatBot.claimTreasure();
-                    tryClaimTreasure = true;
+                    wombatRuns = 0;
+                    nextTreasure = getNextTreasureTime();
+                    System.out.println("Next wombat treasure: " + nextTreasure.toString());
                 }
 
-                if (currentDate.compareTo(nextWombatRun) >= 0) {
+                if (currentDate.compareTo(nextWombatRun) >= 0 && wombatRuns <= 180) {
                     dotAlert.red();
                     wombatBot.run(60 * 60 * 24);
+                    wombatRuns++;
                     nextWombatRun = getTimePlusSecond(waitWombat);
                     System.out.println("Next wombat: " + nextWombatRun.toString());
-
-                    finishedRuns++;
-                    if (finishedRuns % 5 == 0) {
-                        tryClaimTreasure = false;
-                    }
                 }
             }
 
             clickerBot.sleep(1);
         }
+    }
+
+    private static Date getNextTreasureTime() {
+        Date currentTime = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentTime);
+
+        if (calendar.get(Calendar.HOUR_OF_DAY) < 2 || (calendar.get(Calendar.HOUR_OF_DAY) == 2 && calendar.get(Calendar.MINUTE) < 10)) {
+            calendar.set(Calendar.HOUR_OF_DAY, 2);
+            calendar.set(Calendar.MINUTE, 15);
+        } else {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            calendar.set(Calendar.HOUR_OF_DAY, 2);
+            calendar.set(Calendar.MINUTE, 15);
+        }
+        return calendar.getTime();
     }
 
     public static Map<Integer, String> getQueue(String[] queue) {
