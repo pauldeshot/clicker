@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class MultiBotMain {
     private static DotAlert dotAlert;
-    private static int wombatRuns = 0;
 
     public static void main(String[] args) {
         System.out.println("----- SFL && Wombat Clicker ------");
@@ -53,6 +52,7 @@ public class MultiBotMain {
         boolean collectResources = true;
         boolean wombat = true;
 
+        int wombatRuns = 136;
         int delayCrops = 0;
 //        int delayCrops = 8 * 60 * 60 + 40 * 60;
 
