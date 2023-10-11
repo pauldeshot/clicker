@@ -43,24 +43,24 @@ public class MultiBotMain {
         int mealsSmoothieShackCount = 0;
 
         String[] crops = {
-            Crops.Sunflower,
+            Crops.Cabbage,
             Crops.Sunflower,
         };
 
         String mealFirePit = FirePitMeals.Popcorn;
         String mealSmoothieShack = FruitDrinks.PurpleSmoothie;
 
-        boolean farmCrops = true;
-        boolean cookFirePitMeal = false;
-        boolean cookSmoothieShackMeal = false;
-        boolean collectResources = false;
-        boolean wombat = false;
+        boolean farmCrops = false;
+        boolean cookFirePitMeal = true;
+        boolean cookSmoothieShackMeal = true;
+        boolean collectResources = true;
+        boolean wombat = true;
 
         int delayCrops = 0;
 //        int delayCrops = 8 * 60 * 60 + 40 * 60;
 
-        int mealsFirePitTarget = 2;
-        int mealsSmoothieShackTarget = 20;
+        int mealsFirePitTarget = 50;
+        int mealsSmoothieShackTarget = 50;
 
         Map<Integer, String> cropsQueue = getQueue(crops);
 
@@ -76,6 +76,8 @@ public class MultiBotMain {
         int waitWombat = 4 * 60 + 50;
         boolean firstFirePitMeal = true;
         boolean firstSmoothieShackMeal = true;
+
+        FarmData globalFarmData = null;
 
         while (true) {
             Date currentDate = new Date();
@@ -96,6 +98,9 @@ public class MultiBotMain {
                 dotAlert.red();
                 bot.clickInTab();
                 FarmData farmData = bot.checkFarm();
+                if (globalFarmData == null) {
+                    globalFarmData = farmData;
+                }
                 bot.inventory(cropsQueue.get(currentCrop));
                 nextCrop = getTimePlusSecond(config.cropsTimes.get(cropsQueue.get(currentCrop)) + 5);
                 bot.crops(farmData, true);
@@ -106,8 +111,14 @@ public class MultiBotMain {
 
             if (collectResources && currentDate.compareTo(nextResource) >= 0) {
                 dotAlert.red();
+
+                if (globalFarmData == null) {
+                    globalFarmData = bot.checkFarm();
+                }
+
                 bot.clickInTab();
                 bot.resources();
+                bot.minerals(globalFarmData.minerals);
                 nextResource = getTimePlusSecond(resourceWait);
                 System.out.println("Next resources: " + nextResource.toString());
             }

@@ -56,7 +56,7 @@ public class SunflowerLandConfig {
         potion6 = getCoordinate(potionHouse, "potion6");
         potion7 = getCoordinate(potionHouse, "potion7");
 
-        JSONObject cropsCoordinates = jsonObject.getJSONObject("cropsCoordinates");
+        JSONObject cropsCoordinates = jsonObject.getJSONObject("coordinates");
         JSONObject yCoordinates = cropsCoordinates.getJSONObject("y");
         JSONObject xCoordinates = cropsCoordinates.getJSONObject("x");
 

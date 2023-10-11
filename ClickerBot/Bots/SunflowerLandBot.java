@@ -236,10 +236,9 @@ public class SunflowerLandBot {
 
         JSONObject obj = new JSONObject(strJSON);
         JSONObject state = obj.getJSONObject("state");
+
         JSONObject crops = state.getJSONObject("crops");
-
         Iterator keys = crops.keys();
-
         Map<String, CropsInfo> tmpCrops = new HashMap<>();
         while (keys.hasNext()) {
             String key = (String) keys.next();
@@ -260,8 +259,61 @@ public class SunflowerLandBot {
 
             tmpCrops.put(id, cropsInfo);
         }
+
+        Map<String, Mineral> tmpMinerals = new HashMap<>();
+
+        JSONObject stones = state.getJSONObject("stones");
+        keys = stones.keys();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            JSONObject stone = stones.getJSONObject(key);
+            int x = (int) stone.get("x");
+            int y = (int) stone.get("y");
+
+            String id = "id:"+x+y;
+            Mineral mineral = new Mineral();
+            mineral.x = x;
+            mineral.y = y;
+
+            tmpMinerals.put(id, mineral);
+        }
+
+        JSONObject irons = state.getJSONObject("iron");
+        keys = irons.keys();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            JSONObject iron = irons.getJSONObject(key);
+            int x = (int) iron.get("x");
+            int y = (int) iron.get("y");
+
+
+            String id = "id:"+x+y;
+            Mineral mineral = new Mineral();
+            mineral.x = x;
+            mineral.y = y;
+
+            tmpMinerals.put(id, mineral);
+        }
+
+        JSONObject golds = state.getJSONObject("gold");
+        keys = golds.keys();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            JSONObject gold = golds.getJSONObject(key);
+            int x = (int) gold.get("x");
+            int y = (int) gold.get("y");
+
+            String id = "id:"+x+y;
+            Mineral mineral = new Mineral();
+            mineral.x = x;
+            mineral.y = y;
+
+            tmpMinerals.put(id, mineral);
+        }
+
         FarmData farmData = new FarmData();
         farmData.crops = new TreeMap<>(tmpCrops);
+        farmData.minerals = new TreeMap<>(tmpMinerals);
 
         JSONObject inventory = state.getJSONObject("inventory");
 
@@ -356,5 +408,21 @@ public class SunflowerLandBot {
         clickSmoothieShack();
         clickerBot.sleepM(500);
         clickMeal(meal);
+    }
+
+    public void minerals(Map<String, Mineral> minerals) {
+        for (String key : minerals.keySet()) {
+            Mineral mineral = minerals.get(key);
+
+            int x = config.cropsColumnCoordinate.get(mineral.x);
+            int y = config.cropsRowCoordinate.get(mineral.y);
+
+            moveAndClick(x, y);
+            clickerBot.sleepM(300);
+            moveAndClick(x, y);
+            clickerBot.sleepM(300);
+            moveAndClick(x, y);
+            clickerBot.sleepM(300);
+        }
     }
 }
