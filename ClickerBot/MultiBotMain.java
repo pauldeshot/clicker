@@ -39,20 +39,23 @@ public class MultiBotMain {
         int mealsSmoothieShackCount = 0;
 
         String[] crops = {
-            Crops.Cabbage,
-            Crops.Sunflower,
+            Crops.Potato,
+            Crops.Carrot,
+            Crops.Carrot,
+            Crops.Carrot,
+            Crops.Carrot,
         };
 
         String mealFirePit = FirePitMeals.Popcorn;
         String mealSmoothieShack = FruitDrinks.PurpleSmoothie;
 
-        boolean farmCrops = false;
+        boolean farmCrops = true;
         boolean cookFirePitMeal = true;
         boolean cookSmoothieShackMeal = true;
         boolean collectResources = true;
         boolean wombat = true;
 
-        int wombatRuns = 136;
+        int wombatRuns = 53;
         int delayCrops = 0;
 //        int delayCrops = 8 * 60 * 60 + 40 * 60;
 
@@ -86,7 +89,7 @@ public class MultiBotMain {
                 shouldBeAlert(nextFirePitMeal, cookFirePitMeal) ||
                 shouldBeAlert(nextSmoothieShackMeal, cookSmoothieShackMeal) ||
                 shouldBeAlert(nextResource, collectResources) ||
-                shouldBeAlert(nextWombatRun, wombat)
+                shouldBeAlert(nextWombatRun, wombat && wombatRuns <= 180)
             ) {
                 dotAlert.yellow();
             } else {
