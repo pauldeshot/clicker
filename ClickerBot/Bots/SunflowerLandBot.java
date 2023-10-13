@@ -40,6 +40,12 @@ public class SunflowerLandBot {
         }
     }
 
+    public void save() {
+        clickerBot.sleepM(300);
+        moveAndClick(config.saveButton[0], config.saveButton[1]);
+        clickerBot.sleepM(300);
+    }
+
     public void resources() {
         for (int[] resource : config.resources) {
             moveAndClick(resource[0], resource[1]);
@@ -63,6 +69,13 @@ public class SunflowerLandBot {
         clickerBot.click(InputEvent.BUTTON1_DOWN_MASK);
     }
 
+    private void clickSmoothieShack() {
+        Random rand = new Random();
+        int randOffset = 3;
+        clickerBot.move(config.smoothieShack[0] + rand.nextInt(randOffset), config.smoothieShack[1] + rand.nextInt(randOffset));
+        clickerBot.click(InputEvent.BUTTON1_DOWN_MASK);
+    }
+
     private void moveAndClick(int x, int y) {
         Random rand = new Random();
         int randOffset = 3;
@@ -74,41 +87,36 @@ public class SunflowerLandBot {
         Random rand = new Random();
         int randOffset = 3;
 
-        int mealX = config.mashedPotato[0] + rand.nextInt(randOffset);
-        int mealY = config.mashedPotato[1] + rand.nextInt(randOffset);
         int cookButtonX = config.mashedPotatoCookButton[0] + rand.nextInt(randOffset);
         int cookButtonY = config.mashedPotatoCookButton[1] + rand.nextInt(randOffset);
 
         if (meal.equals("Pumpkin Soup")) {
-            mealX = config.pumpkinSoup[0] + rand.nextInt(randOffset);
-            mealY = config.pumpkinSoup[1] + rand.nextInt(randOffset);
             cookButtonX = config.pumpkinSoupCookButton[0] + rand.nextInt(randOffset);
             cookButtonY = config.pumpkinSoupCookButton[1] + rand.nextInt(randOffset);
         }
 
         if (meal.equals("Bumpkin Broth")) {
-            mealX = config.bumpkinBroth[0] + rand.nextInt(randOffset);
-            mealY = config.bumpkinBroth[1] + rand.nextInt(randOffset);
             cookButtonX = config.bumpkinBrothCookButton[0] + rand.nextInt(randOffset);
             cookButtonY = config.bumpkinBrothCookButton[1] + rand.nextInt(randOffset);
         }
 
         if (meal.equals("Popcorn")) {
-            mealX = config.popcorn[0] + rand.nextInt(randOffset);
-            mealY = config.popcorn[1] + rand.nextInt(randOffset);
             cookButtonX = config.popcornButton[0] + rand.nextInt(randOffset);
             cookButtonY = config.popcornButton[1] + rand.nextInt(randOffset);
         }
 
-//        clickerBot.sleepM(300);
-//        clickerBot.move(mealX, mealY);
-//        clickerBot.clickMouse();
-//        System.out.println("das");
+        if (meal.equals("Purple Smoothie")) {
+            cookButtonX = config.purpleSmoothieButton[0] + rand.nextInt(randOffset);
+            cookButtonY = config.purpleSmoothieButton[1] + rand.nextInt(randOffset);
+        }
 
         clickerBot.sleepM(300);
         clickerBot.move(cookButtonX, cookButtonY);
         clickerBot.clickMouse();
-        System.out.println("das 12 31");
+
+        clickerBot.sleepM(300);
+        clickerBot.move(config.blank[0], config.blank[1]);
+        clickerBot.clickMouse();
     }
 
     public String inventory(String item) {
@@ -158,6 +166,11 @@ public class SunflowerLandBot {
 
         if (item.equals("Eggplant")) {
             clickerBot.move(config.eggplant_seed[0], config.eggplant_seed[1]);
+            clickerBot.clickMouse();
+        }
+
+        if (item.equals("Corn")) {
+            clickerBot.move(config.corn_seed[0], config.corn_seed[1]);
             clickerBot.clickMouse();
         }
 
@@ -223,10 +236,9 @@ public class SunflowerLandBot {
 
         JSONObject obj = new JSONObject(strJSON);
         JSONObject state = obj.getJSONObject("state");
+
         JSONObject crops = state.getJSONObject("crops");
-
         Iterator keys = crops.keys();
-
         Map<String, CropsInfo> tmpCrops = new HashMap<>();
         while (keys.hasNext()) {
             String key = (String) keys.next();
@@ -247,8 +259,61 @@ public class SunflowerLandBot {
 
             tmpCrops.put(id, cropsInfo);
         }
+
+        Map<String, Mineral> tmpMinerals = new HashMap<>();
+
+        JSONObject stones = state.getJSONObject("stones");
+        keys = stones.keys();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            JSONObject stone = stones.getJSONObject(key);
+            int x = (int) stone.get("x");
+            int y = (int) stone.get("y");
+
+            String id = "id:"+x+y;
+            Mineral mineral = new Mineral();
+            mineral.x = x;
+            mineral.y = y;
+
+            tmpMinerals.put(id, mineral);
+        }
+
+        JSONObject irons = state.getJSONObject("iron");
+        keys = irons.keys();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            JSONObject iron = irons.getJSONObject(key);
+            int x = (int) iron.get("x");
+            int y = (int) iron.get("y");
+
+
+            String id = "id:"+x+y;
+            Mineral mineral = new Mineral();
+            mineral.x = x;
+            mineral.y = y;
+
+            tmpMinerals.put(id, mineral);
+        }
+
+        JSONObject golds = state.getJSONObject("gold");
+        keys = golds.keys();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            JSONObject gold = golds.getJSONObject(key);
+            int x = (int) gold.get("x");
+            int y = (int) gold.get("y");
+
+            String id = "id:"+x+y;
+            Mineral mineral = new Mineral();
+            mineral.x = x;
+            mineral.y = y;
+
+            tmpMinerals.put(id, mineral);
+        }
+
         FarmData farmData = new FarmData();
         farmData.crops = new TreeMap<>(tmpCrops);
+        farmData.minerals = new TreeMap<>(tmpMinerals);
 
         JSONObject inventory = state.getJSONObject("inventory");
 
@@ -323,7 +388,7 @@ public class SunflowerLandBot {
         return farmData;
     }
 
-    public void collectMeal(String meal, boolean firstMeal) {
+    public void collectMealFirePit(String meal, boolean firstMeal) {
         if (!firstMeal) {
             clickerBot.sleepM(500);
             clickFirePit();
@@ -332,5 +397,32 @@ public class SunflowerLandBot {
         clickFirePit();
         clickerBot.sleepM(500);
         clickMeal(meal);
+    }
+
+    public void collectSmootieShack(String meal, boolean firstMeal) {
+        if (!firstMeal) {
+            clickerBot.sleepM(500);
+            clickSmoothieShack();
+        }
+        clickerBot.sleepM(500);
+        clickSmoothieShack();
+        clickerBot.sleepM(500);
+        clickMeal(meal);
+    }
+
+    public void minerals(Map<String, Mineral> minerals) {
+        for (String key : minerals.keySet()) {
+            Mineral mineral = minerals.get(key);
+
+            int x = config.cropsColumnCoordinate.get(mineral.x);
+            int y = config.cropsRowCoordinate.get(mineral.y);
+
+            moveAndClick(x, y);
+            clickerBot.sleepM(300);
+            moveAndClick(x, y);
+            clickerBot.sleepM(300);
+            moveAndClick(x, y);
+            clickerBot.sleepM(300);
+        }
     }
 }

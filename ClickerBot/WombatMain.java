@@ -5,6 +5,8 @@ import ClickerBot.Bots.WombatBot;
 import ClickerBot.Config.WombatConfig;
 import ClickerBot.DTO.WombatResult;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -24,13 +26,21 @@ public class WombatMain {
         int finished5MinRuns = 1;
         int finished1HourRuns = 1;
         boolean tryClaimTreasure = false;
+        Date nextTreasure = getNextTreasureTime();
 
         while (true) {
             if (lock.tryLock()) {
                 try {
-                    if (!tryClaimTreasure) {
+                    if (finishedRuns >= 180) {
+                        clickerBot.sleep(60);
+                        continue;
+                    }
+
+                    Date currentDate = new Date();
+                    if (currentDate.compareTo(nextTreasure) >= 0) {
+                        finishedRuns = 0;
                         bot.claimTreasure();
-                        tryClaimTreasure = true;
+                        nextTreasure = getNextTreasureTime();
                     }
 
                     WombatResult result = config.mixingRunsMode == 1 ?  ChooseBetweenMixingRuns(new Random().nextBoolean(), currentWaitingRun) : bot.run(currentWaitingRun);
@@ -40,9 +50,6 @@ public class WombatMain {
 
                     if (result.resetTime && config.mixingRunsMode == 0) {
                         finishedRuns++;
-                        if (finishedRuns % 5 == 0) {
-                            tryClaimTreasure = false;
-                        }
                         currentWaitingRun = 0;
                     }
                 } finally {
@@ -61,4 +68,20 @@ public class WombatMain {
 
     static int currentWaitingRun = -1;
     static ClickerBot clickerBot;
+
+    private static Date getNextTreasureTime() {
+        Date currentTime = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentTime);
+
+        if (calendar.get(Calendar.HOUR_OF_DAY) < 2 || (calendar.get(Calendar.HOUR_OF_DAY) == 2 && calendar.get(Calendar.MINUTE) < 10)) {
+            calendar.set(Calendar.HOUR_OF_DAY, 2);
+            calendar.set(Calendar.MINUTE, 15);
+        } else {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            calendar.set(Calendar.HOUR_OF_DAY, 2);
+            calendar.set(Calendar.MINUTE, 15);
+        }
+        return calendar.getTime();
+    }
 }

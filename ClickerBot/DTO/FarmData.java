@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class FarmData {
     public Map<String, CropsInfo> crops;
+    public Map<String, Mineral> minerals;
     public Map<String, Integer> seeds;
 
     public PotionHouse potionHouse;
