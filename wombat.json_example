@@ -13,5 +13,13 @@
   "claimCandyButton": [998,633],
   "runWithoutCandy": [998,633],
   "dontAskAgain": [998,633],
-  "singTransactionButton": [383,636]
+  "singTransactionButton": [383,636],
+  "mixingRunsMode": 1,
+  "maxDelayBetweenRunsInSeconds": 10,
+  "fiveMinMaxRunsConfig": 144,
+  "oneHourMaxRunsConfig": 12,
+  "durationChangeButton": [111, 111],
+  "fiveMinSelectableOption": [222, 222],
+  "oneHourSelectableOption": [333, 333],
+  "startRunFromChangingDurationButton": [444, 444]
 }
