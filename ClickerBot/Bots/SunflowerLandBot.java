@@ -390,23 +390,23 @@ public class SunflowerLandBot {
 
     public void collectMealFirePit(String meal, boolean firstMeal) {
         if (!firstMeal) {
-            clickerBot.sleepM(500);
+            clickerBot.sleepM(1500);
             clickFirePit();
         }
-        clickerBot.sleepM(500);
+        clickerBot.sleepM(1500);
         clickFirePit();
-        clickerBot.sleepM(500);
+        clickerBot.sleepM(1500);
         clickMeal(meal);
     }
 
     public void collectSmootieShack(String meal, boolean firstMeal) {
         if (!firstMeal) {
-            clickerBot.sleepM(500);
+            clickerBot.sleepM(1500);
             clickSmoothieShack();
         }
-        clickerBot.sleepM(500);
+        clickerBot.sleepM(1500);
         clickSmoothieShack();
-        clickerBot.sleepM(500);
+        clickerBot.sleepM(1500);
         clickMeal(meal);
     }
 

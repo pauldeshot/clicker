@@ -39,11 +39,18 @@ public class MultiBotMain {
         int mealsSmoothieShackCount = 0;
 
         String[] crops = {
-            Crops.Potato,
-            Crops.Carrot,
-            Crops.Carrot,
-            Crops.Carrot,
-            Crops.Carrot,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower
         };
 
         String mealFirePit = FirePitMeals.Popcorn;
@@ -55,12 +62,12 @@ public class MultiBotMain {
         boolean collectResources = true;
         boolean wombat = true;
 
-        int wombatRuns = 53;
+        int wombatRuns = 0;
         int delayCrops = 0;
-//        int delayCrops = 8 * 60 * 60 + 40 * 60;
+        //      int delayCrops = 1 * 60 * 60 + 40 * 60;
 
-        int mealsFirePitTarget = 50;
-        int mealsSmoothieShackTarget = 50;
+        int mealsFirePitTarget = 40;
+        int mealsSmoothieShackTarget = 40;
 
         Map<Integer, String> cropsQueue = getQueue(crops);
 
@@ -104,7 +111,7 @@ public class MultiBotMain {
                     globalFarmData = farmData;
                 }
                 bot.inventory(cropsQueue.get(currentCrop));
-                nextCrop = getTimePlusSecond(config.cropsTimes.get(cropsQueue.get(currentCrop)) + 5);
+                nextCrop = getTimePlusSecond(config.cropsTimes.get(cropsQueue.get(currentCrop)) + 10);
                 bot.crops(farmData, true);
                 bot.save();
                 currentCrop++;
@@ -134,7 +141,7 @@ public class MultiBotMain {
                 if (mealsFirePitCount >= mealsFirePitTarget) {
                     cookFirePitMeal = false;
                 } else {
-                    nextFirePitMeal = getTimePlusSecond(config.mealsTimes.get(mealFirePit) + 2);
+                    nextFirePitMeal = getTimePlusSecond(config.mealsTimes.get(mealFirePit) + 15);
                     System.out.println("Next Fire Pit meal: " + nextFirePitMeal.toString());
                 }
             }
@@ -148,7 +155,7 @@ public class MultiBotMain {
                 if (mealsSmoothieShackCount >= mealsSmoothieShackTarget) {
                     cookSmoothieShackMeal = false;
                 } else {
-                    nextSmoothieShackMeal = getTimePlusSecond(config.mealsTimes.get(mealSmoothieShack) + 2);
+                    nextSmoothieShackMeal = getTimePlusSecond(config.mealsTimes.get(mealSmoothieShack) + 15);
                     System.out.println("Next Smoothie Shack meal: " + nextSmoothieShackMeal.toString());
                 }
             }
