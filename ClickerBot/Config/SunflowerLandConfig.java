@@ -102,6 +102,13 @@ public class SunflowerLandConfig {
         eggplant_seed = getCoordinate(seeds, "eggplant");
         corn_seed = getCoordinate(seeds, "corn");
 
+        composterSmall = getCoordinate(jsonObject, "composter_small");
+        composterSmallBtn = getCoordinate(jsonObject, "composter_small_collect_button");
+        composterMedium = getCoordinate(jsonObject, "composter_medium");
+        composterMediumBtn = getCoordinate(jsonObject, "composter_medium_collect_button");
+        composterLarge = getCoordinate(jsonObject, "composter_large");
+        composterLargeBtn = getCoordinate(jsonObject, "composter_large_collect_button");
+
         firePit = getCoordinate(jsonObject, "firePit");
         smoothieShack = getCoordinate(jsonObject, "smoothieShack");
 
@@ -165,6 +172,12 @@ public class SunflowerLandConfig {
     public int[] purpleSmoothie;
     public int[] purpleSmoothieButton;
 
+    public int[] composterSmall;
+    public int[] composterSmallBtn;
+    public int[] composterMedium;
+    public int[] composterMediumBtn;
+    public int[] composterLarge;
+    public int[] composterLargeBtn;
     public Map<String, Integer> cropsTimes;
     public Map<String, Integer> mealsTimes;
 

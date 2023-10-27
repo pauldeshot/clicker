@@ -7,7 +7,7 @@
     "y": {
       "14": 166,
       "13": 204,
-      "12": 241,a
+      "12": 241,
       "11": 279,
       "10": 318
     },
@@ -97,6 +97,14 @@
 
   "firePit": [421,448],
   "smoothieShack": [417,347],
+
+  "composter_small": [513,486],
+  "composter_small_collect_button": [762,528],
+  "composter_medium": [590,486],
+  "composter_medium_collect_button": [762,528],
+  "composter_large": [667,479],
+  "composter_large_collect_button": [733,517],
+
   "meals": {
     "mashedPotatoTime": 54,
     "pumpkinSoupTime": 164,

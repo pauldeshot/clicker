@@ -5,6 +5,7 @@ import ClickerBot.Bots.SunflowerLandBot;
 import ClickerBot.Bots.WombatBot;
 import ClickerBot.Config.SunflowerLandConfig;
 import ClickerBot.Config.WombatConfig;
+import ClickerBot.DTO.Building;
 import ClickerBot.DTO.FarmData;
 import ClickerBot.Enums.Crops;
 import ClickerBot.Enums.FirePitMeals;
@@ -50,21 +51,25 @@ public class MultiBotMain {
             Crops.Sunflower,
             Crops.Sunflower,
             Crops.Sunflower,
-            Crops.Sunflower
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
+            Crops.Sunflower,
         };
 
         String mealFirePit = FirePitMeals.Popcorn;
         String mealSmoothieShack = FruitDrinks.PurpleSmoothie;
 
-        boolean farmCrops = true;
+        boolean farmCrops = false;
         boolean cookFirePitMeal = true;
         boolean cookSmoothieShackMeal = true;
         boolean collectResources = true;
+        boolean collectFertilisers = true;
         boolean wombat = true;
 
         int wombatRuns = 0;
         int delayCrops = 0;
-        //      int delayCrops = 1 * 60 * 60 + 40 * 60;
+//        int delayCrops = 1 * 60 * 60 + 45 * 60;
 
         int mealsFirePitTarget = 40;
         int mealsSmoothieShackTarget = 40;
@@ -77,14 +82,16 @@ public class MultiBotMain {
         Date nextCrop = getTimePlusSecond(delayCrops);
         Date nextResource = new Date();
         Date nextWombatRun = new Date();
-        Date nextFirePitMeal = new Date();
-        Date nextSmoothieShackMeal = new Date();
+        Date nextCheckFarm = new Date();
+        Date nextFirePitMeal = null;
+        Date nextSmoothieShackMeal = null;
+        Date nextComposterSmall = null;
+        Date nextComposterMedium = null;
+        Date nextComposterLarge = null;
         Date nextTreasure = getNextTreasureTime();
 
 
         int waitWombat = 4 * 60 + 50;
-        boolean firstFirePitMeal = true;
-        boolean firstSmoothieShackMeal = true;
 
         FarmData globalFarmData = null;
 
@@ -93,8 +100,8 @@ public class MultiBotMain {
             // alert
             if (
                 shouldBeAlert(nextCrop, farmCrops) ||
-                shouldBeAlert(nextFirePitMeal, cookFirePitMeal) ||
-                shouldBeAlert(nextSmoothieShackMeal, cookSmoothieShackMeal) ||
+                (nextFirePitMeal != null && shouldBeAlert(nextFirePitMeal, cookFirePitMeal)) ||
+                (nextSmoothieShackMeal != null && shouldBeAlert(nextSmoothieShackMeal, cookSmoothieShackMeal)) ||
                 shouldBeAlert(nextResource, collectResources) ||
                 shouldBeAlert(nextWombatRun, wombat && wombatRuns <= 180)
             ) {
@@ -132,31 +139,98 @@ public class MultiBotMain {
                 System.out.println("Next resources: " + nextResource.toString());
             }
 
-            if (cookFirePitMeal && currentDate.compareTo(nextFirePitMeal) >= 0) {
+            if ((collectFertilisers || cookFirePitMeal || cookSmoothieShackMeal) && currentDate.compareTo(nextCheckFarm) >= 0) {
+                FarmData farmData = bot.checkFarm();
+                Map<String, Building> buildings = farmData.buildings;
+
+                long readyAt = buildings.get("Premium Composter").readyAt;
+                if (readyAt > 0) {
+                    nextComposterLarge = addSecondsToDate(new Date(readyAt), 10);
+                } else if (!buildings.get("Premium Composter").isProducing) {
+                    nextComposterLarge = new Date();
+                }
+                System.out.println("Next large composter: " + nextComposterLarge);
+
+                readyAt = buildings.get("Turbo Composter").readyAt;
+                if (readyAt > 0) {
+                    nextComposterMedium = addSecondsToDate(new Date(readyAt), 10);
+                } else if (!buildings.get("Turbo Composter").isProducing) {
+                    nextComposterMedium = new Date();
+                }
+                System.out.println("Next medium composter: " + nextComposterMedium);
+
+                readyAt = buildings.get("Compost Bin").readyAt;
+                if (readyAt > 0) {
+                    nextComposterSmall = addSecondsToDate(new Date(readyAt), 10);
+                } else if (!buildings.get("Compost Bin").isProducing) {
+                    nextComposterSmall = new Date();
+                }
+                System.out.println("Next small composter: " + nextComposterSmall);
+
+                readyAt = buildings.get("Fire Pit").readyAt;
+                if (readyAt > 0) {
+                    nextFirePitMeal = addSecondsToDate(new Date(readyAt), 10);
+                } else if (!buildings.get("Fire Pit").isProducing) {
+                    nextFirePitMeal = new Date();
+                }
+                System.out.println("Next next Fire Pit: " + nextFirePitMeal);
+
+                readyAt = buildings.get("Smoothie Shack").readyAt;
+                if (readyAt > 0) {
+                    nextSmoothieShackMeal = addSecondsToDate(new Date(readyAt), 10);
+                } else if (!buildings.get("Smoothie Shack").isProducing) {
+                    nextSmoothieShackMeal = new Date();
+                }
+                System.out.println("Next next Smoothie Shack: " + nextSmoothieShackMeal);
+
+                nextCheckFarm = getTimePlusSecond(10 * 60);
+            }
+
+            if (collectFertilisers && nextComposterSmall != null && currentDate.compareTo(nextComposterSmall) >= 0) {
                 dotAlert.red();
                 bot.clickInTab();
-                bot.collectMealFirePit(mealFirePit, firstFirePitMeal);
+                bot.collectSmallComposter();
+                nextComposterSmall = null;
+            }
+
+            if (collectFertilisers && nextComposterMedium != null && currentDate.compareTo(nextComposterMedium) >= 0) {
+                dotAlert.red();
+                bot.clickInTab();
+                bot.collectMediumComposter();
+                nextComposterMedium = null;
+            }
+
+            if (collectFertilisers && nextComposterLarge != null && currentDate.compareTo(nextComposterLarge) >= 0) {
+                dotAlert.red();
+                bot.clickInTab();
+                bot.collectLargeComposter();
+                nextComposterLarge = null;
+            }
+
+
+            if (cookFirePitMeal && nextFirePitMeal != null && currentDate.compareTo(nextFirePitMeal) >= 0) {
+                dotAlert.red();
+                bot.clickInTab();
+                bot.collectMealFirePit();
+                bot.cookMealFirePit(mealFirePit);
                 mealsFirePitCount++;
-                firstFirePitMeal = false;
                 if (mealsFirePitCount >= mealsFirePitTarget) {
                     cookFirePitMeal = false;
                 } else {
-                    nextFirePitMeal = getTimePlusSecond(config.mealsTimes.get(mealFirePit) + 15);
-                    System.out.println("Next Fire Pit meal: " + nextFirePitMeal.toString());
+                    nextFirePitMeal = null;
                 }
             }
 
-            if (cookSmoothieShackMeal && currentDate.compareTo(nextSmoothieShackMeal) >= 0) {
+            if (cookSmoothieShackMeal && nextSmoothieShackMeal != null && currentDate.compareTo(nextSmoothieShackMeal) >= 0) {
                 dotAlert.red();
                 bot.clickInTab();
-                bot.collectSmootieShack(mealSmoothieShack, firstSmoothieShackMeal);
+                bot.collectSmootieShack();
+                bot.cookSmootieShack(mealSmoothieShack);
                 mealsSmoothieShackCount++;
-                firstSmoothieShackMeal = false;
                 if (mealsSmoothieShackCount >= mealsSmoothieShackTarget) {
                     cookSmoothieShackMeal = false;
                 } else {
-                    nextSmoothieShackMeal = getTimePlusSecond(config.mealsTimes.get(mealSmoothieShack) + 15);
-                    System.out.println("Next Smoothie Shack meal: " + nextSmoothieShackMeal.toString());
+                    nextSmoothieShackMeal = null;
                 }
             }
 
@@ -215,6 +289,13 @@ public class MultiBotMain {
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
+        calendar.add(Calendar.SECOND, seconds);
+        return calendar.getTime();
+    }
+
+    private static Date addSecondsToDate(Date date, int seconds) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
         calendar.add(Calendar.SECOND, seconds);
         return calendar.getTime();
     }

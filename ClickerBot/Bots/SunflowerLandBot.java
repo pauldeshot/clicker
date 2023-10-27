@@ -120,13 +120,11 @@ public class SunflowerLandBot {
     }
 
     public String inventory(String item) {
-        clickerBot.move(config.inventory[0], config.inventory[1]);
-        clickerBot.clickMouse();
-        clickerBot.sleepM(1000);
+        clickerBot.moveAndClick(config.inventory[0], config.inventory[1]);
+        clickerBot.sleepM(2000);
 
         if (item.equals("Sunflower")) {
-            clickerBot.move(config.sunflower_seed[0], config.sunflower_seed[1]);
-            clickerBot.clickMouse();
+            clickerBot.moveAndClick(config.sunflower_seed[0], config.sunflower_seed[1]);
         }
 
         if (item.equals("Potato")) {
@@ -311,7 +309,44 @@ public class SunflowerLandBot {
             tmpMinerals.put(id, mineral);
         }
 
+        Map<String, Building> tmpBuilding = new HashMap<>();
+        JSONObject buildingsData = state.getJSONObject("buildings");
+        keys = buildingsData.keys();
+
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            if (key.equals("Water Well")) {
+                continue;
+            }
+            JSONArray buildingsList = buildingsData.getJSONArray(key);
+            JSONObject buildingData = buildingsList.getJSONObject(0);
+
+            Building building = new Building();
+            building.name = key;
+
+            if (key.equals("Bakery") || key.equals("Kitchen") || key.equals("Fire Pit") || key.equals("Smoothie Shack") || key.equals("Deli")) {
+                if (buildingData.has("crafting")) {
+                    JSONObject crafting = buildingData.getJSONObject("crafting");
+                    building.readyAt = (long) crafting.get("readyAt");
+                    building.isProducing = true;
+                } else {
+                    building.isProducing = false;
+                }
+            }
+            if (key.equals("Premium Composter") || key.equals("Compost Bin") || key.equals("Turbo Composter")) {
+                if (buildingData.has("producing")) {
+                    JSONObject crafting = buildingData.getJSONObject("producing");
+                    building.readyAt = (long) crafting.get("readyAt");
+                    building.isProducing = true;
+                } else {
+                    building.isProducing = false;
+                }
+            }
+            tmpBuilding.put(key, building);
+        }
+
         FarmData farmData = new FarmData();
+        farmData.buildings = new TreeMap<>(tmpBuilding);
         farmData.crops = new TreeMap<>(tmpCrops);
         farmData.minerals = new TreeMap<>(tmpMinerals);
 
@@ -388,22 +423,32 @@ public class SunflowerLandBot {
         return farmData;
     }
 
-    public void collectMealFirePit(String meal, boolean firstMeal) {
-        if (!firstMeal) {
-            clickerBot.sleepM(1500);
-            clickFirePit();
-        }
+    public void collectMealFirePit() {
+        clickerBot.sleepM(1500);
+        clickFirePit();
+
+        clickerBot.sleepM(300);
+        clickerBot.move(config.blank[0], config.blank[1]);
+        clickerBot.clickMouse();
+    }
+
+    public void cookMealFirePit(String meal) {
         clickerBot.sleepM(1500);
         clickFirePit();
         clickerBot.sleepM(1500);
         clickMeal(meal);
     }
 
-    public void collectSmootieShack(String meal, boolean firstMeal) {
-        if (!firstMeal) {
-            clickerBot.sleepM(1500);
-            clickSmoothieShack();
-        }
+    public void collectSmootieShack() {
+        clickerBot.sleepM(1500);
+        clickSmoothieShack();
+
+        clickerBot.sleepM(300);
+        clickerBot.move(config.blank[0], config.blank[1]);
+        clickerBot.clickMouse();
+    }
+
+    public void cookSmootieShack(String meal) {
         clickerBot.sleepM(1500);
         clickSmoothieShack();
         clickerBot.sleepM(1500);
@@ -424,5 +469,31 @@ public class SunflowerLandBot {
             moveAndClick(x, y);
             clickerBot.sleepM(300);
         }
+    }
+
+    public void collectSmallComposter() {
+        moveAndClick(config.composterSmall[0], config.composterSmall[1]);
+        clickerBot.sleepM(500);
+        moveAndClick(config.composterSmallBtn[0], config.composterSmallBtn[1]);
+        clickerBot.sleepM(4000);
+        moveAndClick(config.composterSmallBtn[0], config.composterSmallBtn[1]);
+        clickerBot.sleepM(500);
+    }
+    public void collectMediumComposter() {
+        moveAndClick(config.composterMedium[0], config.composterMedium[1]);
+        clickerBot.sleepM(500);
+        moveAndClick(config.composterMediumBtn[0], config.composterMediumBtn[1]);
+        clickerBot.sleepM(4000);
+        moveAndClick(config.composterMediumBtn[0], config.composterMediumBtn[1]);
+        clickerBot.sleepM(500);
+    }
+
+    public void collectLargeComposter() {
+        moveAndClick(config.composterLarge[0], config.composterLarge[1]);
+        clickerBot.sleepM(500);
+        moveAndClick(config.composterLargeBtn[0], config.composterLargeBtn[1]);
+        clickerBot.sleepM(4000);
+        moveAndClick(config.composterLargeBtn[0], config.composterLargeBtn[1]);
+        clickerBot.sleepM(500);
     }
 }
