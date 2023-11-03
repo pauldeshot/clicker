@@ -22,7 +22,7 @@ public class WombatMain {
 
         Lock lock = new ReentrantLock();
 
-        int finishedRuns = 135;
+        int finishedRuns = 0;
         Date nextTreasure = getNextTreasureTime();
 
 

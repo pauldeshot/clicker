@@ -40,21 +40,13 @@ public class MultiBotMain {
         int mealsSmoothieShackCount = 0;
 
         String[] crops = {
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
-            Crops.Sunflower,
+            Crops.Cabbage,
+            Crops.Cabbage,
+            Crops.Carrot,
+            Crops.Carrot,
+            Crops.Pumpkin,
+            Crops.Pumpkin,
+            Crops.Pumpkin,
         };
 
         String mealFirePit = FirePitMeals.Popcorn;
