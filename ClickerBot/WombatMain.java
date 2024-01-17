@@ -13,18 +13,55 @@ import java.util.concurrent.locks.ReentrantLock;
 public class WombatMain {
     public static void main(String[] args) {
         System.out.println("----- Wombat clicker ------");
-        clickerBot = new ClickerBot();
-        System.out.println("Program uruchomi się za 2 sekundy.");
-        clickerBot.sleep(2);
 
         WombatConfig config = new WombatConfig();
         WombatBot bot = new WombatBot(config, clickerBot);
 
         Lock lock = new ReentrantLock();
-
-        int finishedRuns = 0;
+        
         Date nextTreasure = getNextTreasureTime();
 
+        Scanner userFirstDecisionInput = new Scanner(System.in);
+        while(true) {
+            System.out.println("Do you want to set current run or start from 0? Yes/No ?");
+
+            String input = userFirstDecisionInput.nextLine();
+
+            if (!input.isEmpty() && (input.toLowerCase() == "yes" || input.toLowerCase() == "no")) {
+                if (input.toLowerCase() == "yes") {
+                    Scanner userSetCurrentRunInput = new Scanner(System.in);
+                    while(true) {
+                        System.out.println("Set your current run.");
+                        String inputForSettingRun = userFirstDecisionInput.nextLine();
+                        try {
+                            int intValue = Integer.parseInt(inputForSettingRun);
+                            if (intValue > 0 && intValue < config.maxRuns) {
+                                config.currentRunNumber = intValue;
+                                break;
+                            }
+                            else {
+                                System.out.println("Value is not in expectable range.");
+                            }
+                            
+                        } catch (NumberFormatException e) {
+                            System.out.println("Input String cannot be parsed to Integer.");
+                        }
+                    }
+                }
+                else {
+                    config.currentRunNumber = 0;
+                    break;
+                }
+            }
+            else {
+                System.out.println("Incorrect value please set corret one! Yes or No");
+            }
+        }
+
+        int finishedRuns = config.currentRunNumber;
+        clickerBot = new ClickerBot();
+        System.out.println("Program uruchomi się za 2 sekundy.");
+        clickerBot.sleep(2);
 
         while (true) {
             if (lock.tryLock()) {
@@ -48,6 +85,9 @@ public class WombatMain {
                     if (result.resetTime) {
                         finishedRuns++;
                         currentWaitingRun = 0;
+                        StringBuilder stringInfo = new StringBuilder(100); 
+                        stringInfo.append(String.format("Current run number is:  %i", finishedRuns));
+                        System.out.print(stringInfo);
                     }
                 } finally {
                     lock.unlock();
