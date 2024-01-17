@@ -26,9 +26,10 @@ public class WombatMain {
         while(true) {
             System.out.println("Do you want to set current run or start from 0? Yes/No ?");
 
-            String input = userFirstDecisionInput.nextLine();
+            String input = userFirstDecisionInput.nextLine().toLowerCase();
+            System.out.println(input);
 
-            if (!input.isEmpty() && (input.toLowerCase() == "yes" || input.toLowerCase() == "no")) {
+            if (!input.isEmpty() && (input.equals("yes") || input.equals("no"))) {
                 if (input.toLowerCase() == "yes") {
                     Scanner userSetCurrentRunInput = new Scanner(System.in);
                     while(true) {
