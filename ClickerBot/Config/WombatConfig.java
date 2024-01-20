@@ -24,6 +24,7 @@ public class WombatConfig {
     public int[] singTransactionButton;
     public int[] runWithoutCandy;
     public int[] dontAskAgain;
+    public int currentRunNumber;
 
     public WombatConfig() {
         String path = "wombat.json";
@@ -51,6 +52,7 @@ public class WombatConfig {
         dontAskAgain = getCoordinate(jsonObject, "dontAskAgain");
         runWithoutCandy = getCoordinate(jsonObject, "runWithoutCandy");
         singTransactionButton = getCoordinate(jsonObject, "singTransactionButton");
+        currentRunNumber = 0;
     }
 
     public int[] getCoordinate(JSONObject arr, String element) {
