@@ -16,6 +16,7 @@ public class WombatMain {
         System.out.println("----- Wombat clicker ------");
 
         WombatConfig config = new WombatConfig();
+        clickerBot = new ClickerBot();
         WombatBot bot = new WombatBot(config, clickerBot);
 
         Lock lock = new ReentrantLock();
@@ -23,14 +24,20 @@ public class WombatMain {
         Date nextTreasure = getNextTreasureTime();
 
         Scanner userFirstDecisionInput = new Scanner(System.in);
+
+        boolean isSetCurrentRun = false;
         while(true) {
+
+            if(isSetCurrentRun) {
+                break;
+            }
+            
             System.out.println("Do you want to set current run or start from 0? Yes/No ?");
 
             String input = userFirstDecisionInput.nextLine().toLowerCase();
-            System.out.println(input);
 
             if (!input.isEmpty() && (input.equals("yes") || input.equals("no"))) {
-                if (input.toLowerCase() == "yes") {
+                if (input.equals("yes")) {
                     Scanner userSetCurrentRunInput = new Scanner(System.in);
                     while(true) {
                         System.out.println("Set your current run.");
@@ -39,6 +46,7 @@ public class WombatMain {
                             int intValue = Integer.parseInt(inputForSettingRun);
                             if (intValue > 0 && intValue < config.maxRuns) {
                                 config.currentRunNumber = intValue;
+                                isSetCurrentRun = true;
                                 break;
                             }
                             else {
@@ -61,8 +69,7 @@ public class WombatMain {
         }
 
         int finishedRuns = config.currentRunNumber;
-        clickerBot = new ClickerBot();
-        System.out.println("Program uruchomi się za 2 sekundy.");
+        System.out.println("App will start in 2 seconds.");
         clickerBot.sleep(2);
 
         while (true) {
@@ -79,7 +86,7 @@ public class WombatMain {
                         bot.claimTreasure();
                         nextTreasure = getNextTreasureTime();
                     }
-
+                    
                     WombatResult result = bot.run(currentWaitingRun);
                     clickerBot.sleep(1);
                     currentWaitingRun += result.totalWaitingTime;
@@ -87,8 +94,8 @@ public class WombatMain {
                     if (result.resetTime) {
                         finishedRuns++;
                         currentWaitingRun = 0;
-                        StringBuilder stringInfo = new StringBuilder(100); 
-                        stringInfo.append(String.format("Current run number is:  %i", finishedRuns));
+                        StringBuilder stringInfo = new StringBuilder(30); 
+                        stringInfo.append(String.format("\rThe number of the last completed run is: %d", finishedRuns));
                         System.out.print(stringInfo);
                     }
                 } finally {
