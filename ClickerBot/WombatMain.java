@@ -75,8 +75,9 @@ public class WombatMain {
         while (true) {
             if (lock.tryLock()) {
                 try {
-                    if (finishedRuns >= 180) {
-                        clickerBot.sleep(60);
+                    if (finishedRuns >= config.maxRuns) {
+                        bot.claim();
+                        bot.refresh();
                         continue;
                     }
 
@@ -114,14 +115,17 @@ public class WombatMain {
         Date currentTime = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentTime);
+        calendar.set(Calendar.SECOND, 0);
 
         if (calendar.get(Calendar.HOUR_OF_DAY) < 2 || (calendar.get(Calendar.HOUR_OF_DAY) == 2 && calendar.get(Calendar.MINUTE) < 10)) {
-            calendar.set(Calendar.HOUR_OF_DAY, 2);
-            calendar.set(Calendar.MINUTE, 15);
+            calendar.set(Calendar.HOUR_OF_DAY, 1);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 10);
         } else {
             calendar.add(Calendar.DAY_OF_YEAR, 1);
-            calendar.set(Calendar.HOUR_OF_DAY, 2);
-            calendar.set(Calendar.MINUTE, 15);
+            calendar.set(Calendar.HOUR_OF_DAY, 1);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 10);
         }
         return calendar.getTime();
     }

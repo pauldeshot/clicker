@@ -59,6 +59,16 @@ public class WombatBot {
         treasureClaim();
     }
 
+    public void refresh() {
+        clickerBot.move(config.refresh[0], config.refresh[1]);
+        clickerBot.clickMouse();
+        clickerBot.sleep(30);
+    }
+    public void claim() {
+        clickerBot.move(config.rewardButton[0], config.rewardButton[1]);
+        clickerBot.clickMouse();
+    }
+
     private void treasureClaim() {
         clickerBot.move(config.treasure[0], config.treasure[1]);
         clickerBot.clickMouse();
@@ -98,15 +108,6 @@ public class WombatBot {
 
         clickerBot.sleep(waitingTime);
         clickerBot.move(config.requestAll[0], config.requestAll[1]);
-        clickerBot.clickMouse();
-    }
-    private void refresh() {
-        clickerBot.move(config.refresh[0], config.refresh[1]);
-        clickerBot.clickMouse();
-        clickerBot.sleep(30);
-    }
-    private void claim() {
-        clickerBot.move(config.rewardButton[0], config.rewardButton[1]);
         clickerBot.clickMouse();
     }
 
