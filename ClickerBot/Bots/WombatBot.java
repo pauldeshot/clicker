@@ -25,17 +25,17 @@ public class WombatBot {
             clickerBot.sleep(1);
             clickInTab();
             if (currentWaitingRun > 0) {
-                clickerBot.sleep(3);
+                clickerBot.sleep(2);
                 result.totalWaitingTime += 3;
                 claim();
                 clickerBot.sleep(1);
                 result.totalWaitingTime += 1;
                 claim();
-                clickerBot.sleep(3);
+                clickerBot.sleep(2);
                 result.totalWaitingTime += 3;
             }
             Random rand = new Random();
-            clickerBot.sleep(rand.nextInt(5));
+            clickerBot.sleep(rand.nextInt(3));
             startRun();
             this.helpRequested = false;
             result.resetTime = true;
@@ -62,7 +62,7 @@ public class WombatBot {
     public void refresh() {
         clickerBot.move(config.refresh[0], config.refresh[1]);
         clickerBot.clickMouse();
-        clickerBot.sleep(30);
+        clickerBot.sleep(10);
     }
     public void claim() {
         clickerBot.move(config.rewardButton[0], config.rewardButton[1]);
@@ -72,28 +72,32 @@ public class WombatBot {
     private void treasureClaim() {
         clickerBot.move(config.treasure[0], config.treasure[1]);
         clickerBot.clickMouse();
-        clickerBot.sleep(3);
+        clickerBot.sleep(2);
         clickerBot.move(config.treasure[0], config.treasure[1]);
         clickerBot.clickMouse();
-        clickerBot.sleep(3);
+        clickerBot.sleep(2);
         runs = 0;
     }
 
     private void startRun() {
+        clickerBot.move(config.levelUpButton[0], config.levelUpButton[1]);
+        clickerBot.clickMouse();
+        clickerBot.sleep(1);
+
         clickerBot.move(config.runButton[0], config.runButton[1]);
         clickerBot.clickMouse();
-        clickerBot.sleep(3);
+        clickerBot.sleep(2);
 
         if (config.collectCandy == 1) {
             clickerBot.move(config.claimCandyButton[0], config.claimCandyButton[1]);
             clickerBot.clickMouse();
-            clickerBot.sleep(3);
+            clickerBot.sleep(2);
             clickerBot.move(config.singTransactionButton[0], config.singTransactionButton[1]);
             clickerBot.clickMouse();
         } else {
             clickerBot.move(config.dontAskAgain[0], config.dontAskAgain[1]);
             clickerBot.clickMouse();
-            clickerBot.sleep(3);
+            clickerBot.sleep(2);
             clickerBot.move(config.runWithoutCandy[0], config.runWithoutCandy[1]);
             clickerBot.clickMouse();
         }

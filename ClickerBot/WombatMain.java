@@ -119,13 +119,13 @@ public class WombatMain {
 
         if (calendar.get(Calendar.HOUR_OF_DAY) < 2 || (calendar.get(Calendar.HOUR_OF_DAY) == 2 && calendar.get(Calendar.MINUTE) < 10)) {
             calendar.set(Calendar.HOUR_OF_DAY, 1);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 10);
+            calendar.set(Calendar.MINUTE, 4);
+            calendar.set(Calendar.SECOND, 5);
         } else {
             calendar.add(Calendar.DAY_OF_YEAR, 1);
             calendar.set(Calendar.HOUR_OF_DAY, 1);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 10);
+            calendar.set(Calendar.MINUTE, 4);
+            calendar.set(Calendar.SECOND, 5);
         }
         return calendar.getTime();
     }
