@@ -13,5 +13,6 @@
   "claimCandyButton": [998,633],
   "runWithoutCandy": [998,633],
   "dontAskAgain": [998,633],
-  "singTransactionButton": [383,636]
+  "singTransactionButton": [383,636],
+  "levelUpButton": [989,539]
 }
